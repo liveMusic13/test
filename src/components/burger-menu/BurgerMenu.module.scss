@@ -1,0 +1,76 @@
+@import '../../assets/styles/variables';
+@import '../../assets/styles/functions';
+
+.wrapper_burger {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	z-index: 5000;
+	background-color: $color_three;
+	display: flex;
+	flex-direction: column;
+	padding: adapt(20px, 1440px) adapt(30px, 1440px);
+	overflow-y: auto;
+
+	> .block__title {
+		height: adapt(110px, 1440px);
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+
+		> .burger__button {
+			width: adapt(102px, 1440px);
+			height: adapt(102px, 1440px);
+			background-color: transparent;
+			position: relative;
+
+			&:hover {
+				cursor: pointer;
+				background-color: $color_four;
+			}
+
+			> span {
+				width: adapt(102px, 1440px);
+				height: 2px;
+				background-color: $color_two;
+				display: block;
+				position: relative;
+				transform: rotate(-45deg);
+			}
+
+			&::after {
+				position: absolute;
+				content: '';
+				width: adapt(102px, 1440px);
+				height: 2px;
+				left: 0;
+				bottom: 44.5%;
+				background-color: $color_two;
+				transform: rotate(45deg);
+			}
+		}
+
+		> .logout__button {
+			width: adapt(102px, 1440px);
+			height: adapt(102px, 1440px);
+			background-color: transparent;
+
+			&:hover {
+				cursor: pointer;
+				background-color: $color_four;
+			}
+
+			> .logout_svg {
+				width: adapt(102px, 1440px);
+				height: adapt(102px, 1440px);
+				color: $color_two;
+			}
+		}
+	}
+
+	> .block__settingsMap {
+		display: flex;
+	}
+}

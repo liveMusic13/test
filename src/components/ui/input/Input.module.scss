@@ -1,0 +1,25 @@
+@import '../../../assets/styles/variables';
+@import '../../../assets/styles/functions';
+
+.input {
+	font-size: 1rem;
+	border-bottom: 1px solid $color_one;
+	outline: none;
+	padding: adapt(18px, 1440px) 0px;
+	margin: adapt(8px, 1440px);
+	width: adapt(126px, 1440px);
+
+	&:focus {
+		border-bottom: $color_two;
+		box-shadow: 0px 3px 3px -3px $color_two;
+	}
+
+	&::placeholder {
+		font-size: 1rem;
+		color: $color_seven;
+	}
+
+	@media (max-width: 767.98px) {
+		width: 50%;
+	}
+}
