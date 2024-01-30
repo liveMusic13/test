@@ -7,9 +7,14 @@
 	gap: adapt(20px, 1440px);
 	width: adapt(300px, 1440px);
 	height: 100%;
+	position: absolute;
+	z-index: 6000;
+	left: 0;
+	background-color: $color_three;
 
 	@media (max-width: 767.98px) {
 		width: 100%;
+		position: relative;
 	}
 
 	> .title {

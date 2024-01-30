@@ -6,6 +6,7 @@ const initialState = {
 	// isViewBurger: false,
 	isSettingsMap: false,
 	isObjectInfo: false,
+	isLoading: false,
 };
 
 export const viewSettings = createSlice({
@@ -19,7 +20,7 @@ export const viewSettings = createSlice({
 			return { ...state, isViewObjects: !state.isViewObjects };
 		},
 		toggleObjectInfo: (state, { payload }) => {
-			return { ...state, isObjectInfo: !state.isObjectInfo };
+			return { ...state, isObjectInfo: true };
 		},
 
 		// toggleBurger: (state, { payload }) => {
@@ -30,6 +31,12 @@ export const viewSettings = createSlice({
 		},
 		activeSettingsMap: (state, { payload }) => {
 			return { ...state, isSettingsMap: true };
+		},
+		activeLoading: (state, { payload }) => {
+			return { ...state, isLoading: true };
+		},
+		defaultLoading: (state, { payload }) => {
+			return { ...state, isLoading: false };
 		},
 		defaultFilters: (state, { payload }) => {
 			return { ...state, isViewFilters: false };

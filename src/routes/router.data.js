@@ -2,7 +2,7 @@ import Home from '../components/screens/home/Home';
 
 export const routes = [
 	{
-		path: '/',
+		path: '/:map?',
 		component: Home,
 		isAuth: false,
 	},

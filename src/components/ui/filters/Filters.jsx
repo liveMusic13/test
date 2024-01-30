@@ -2,9 +2,12 @@ import CustomSelect from '../custom-select/CustomSelect';
 import Input from '../input/Input';
 import styles from './Filters.module.scss';
 
-const Filters = () => {
+const Filters = ({ isDisplay }) => {
 	return (
-		<div className={styles.block__filters}>
+		<div
+			className={styles.block__filters}
+			style={isDisplay ? {} : { display: 'none' }}
+		>
 			<h2 className={styles.title}>Фильтры</h2>
 			<div className={styles.block__inputs}>
 				<h2 className={styles.title__inputs}>Количество</h2>

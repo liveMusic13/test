@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../ui/button/Button';
+import Loading from '../ui/loading/Loading';
 import styles from './AllObjects.module.scss';
 
-const AllObjects = () => {
+const AllObjects = ({ isDisplay }) => {
 	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
+	const viewSettings = useSelector(state => state.viewSettings);
 	const [numDisplayed, setNumDisplayed] = useState(40);
 	const loader = useRef();
 
@@ -31,8 +33,18 @@ const AllObjects = () => {
 		hover_text: 'Показать на карте',
 	};
 
+	let style = {};
+
+	if (!(viewSettings.isObjectInfo || viewSettings.isViewFilters)) {
+		style.left = '0';
+	}
+
+	if (!isDisplay) {
+		style.display = 'none';
+	}
+
 	return (
-		<div className={styles.block__allObjects}>
+		<div className={styles.block__allObjects} style={style}>
 			<div className={styles.block__title}>
 				<div className={styles.allObjects}>
 					<p className={styles.description}>Всего объектов в списке:</p>
@@ -52,15 +64,35 @@ const AllObjects = () => {
 				</div>
 			</div>
 			<div className={styles.block__objects}>
-				{dataObjectsInMap?.points?.slice(0, numDisplayed).map(elem => {
-					return (
-						<div key={elem.id} className={styles.object}>
-							<p>{elem.name}</p>
-							<Button icon={mapIcon} />
+				{viewSettings.isLoading ? (
+					<>
+						<div className={styles.object}>
+							<Loading height='calc(60/1440 * 100vw)' />
 						</div>
-					);
-				})}
-				<div ref={loader}>Загрузка...</div>
+						<div className={styles.object}>
+							<Loading height='calc(60/1440 * 100vw)' />
+						</div>
+						<div className={styles.object}>
+							<Loading height='calc(60/1440 * 100vw)' />
+						</div>
+						<div className={styles.object}>
+							<Loading height='calc(60/1440 * 100vw)' />
+						</div>
+						<div className={styles.object}>
+							<Loading height='calc(60/1440 * 100vw)' />
+						</div>
+					</>
+				) : (
+					dataObjectsInMap?.points?.slice(0, numDisplayed).map(elem => {
+						return (
+							<div key={elem.id} className={styles.object}>
+								<p>{elem.name}</p>
+								<Button icon={mapIcon} />
+							</div>
+						);
+					})
+				)}
+				{/* <div ref={loader}>Загрузка...</div> */}
 			</div>
 		</div>
 	);

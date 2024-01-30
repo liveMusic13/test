@@ -1,3 +1,7 @@
 @function adapt($size, $screen) {
 	@return calc($size / $screen * 100vw);
 }
+
+@function test($size, $screen) {
+	@return ($size / $screen) * 100%;
+}

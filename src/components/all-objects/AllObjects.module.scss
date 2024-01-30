@@ -1,15 +1,27 @@
 @import '../../assets/styles/variables';
 @import '../../assets/styles/functions';
+@import '../../assets/styles/animations';
 
 .block__allObjects {
-	min-width: adapt(283px, 1440px);
+	width: adapt(283px, 1440px);
 	border: 1px solid $color_four;
+	border-top: none;
+	position: absolute;
+	z-index: 6000;
+	left: adapt(300px, 1440px);
+	background-color: $color_three;
+	height: 100%;
+
+	// background: linear-gradient(270deg, $color_two, $color_three);
+	// background-size: 200% 200%;
+	// animation: gradient 2s ease infinite;
 
 	@media (max-width: 991.98px) {
 		min-width: adapt(300px, 1440px);
 	}
 
 	@media (max-width: 767.98px) {
+		position: static;
 		width: 100%;
 	}
 
@@ -20,7 +32,7 @@
 		border-bottom: 1px solid $color_four;
 
 		@media (max-width: 767.98px) {
-			margin-bottom: 7%;
+			margin-bottom: 13%;
 		}
 
 		> .allObjects {
@@ -31,6 +43,8 @@
 
 			@media (max-width: 767.98px) {
 				background-color: #f7f7f7;
+				padding: adapt(20px, 1440px);
+				padding-right: adapt(50px, 1440px);
 			}
 
 			> p {
@@ -53,6 +67,8 @@
 			@media (max-width: 767.98px) {
 				background-color: #f7f7f7;
 				border-bottom: 1px solid $color_four;
+				padding: adapt(20px, 1440px);
+				padding-right: adapt(50px, 1440px);
 			}
 
 			> p {

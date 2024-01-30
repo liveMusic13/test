@@ -48,15 +48,24 @@ const CustomMap = () => {
 					});
 
 					const getObjectInfo = async () => {
-						const responce = await $axios.get(
-							`/api/object_info.php?id=${object.id}`
-						);
-						console.log(responce);
-
-						dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
-						dispatch(viewSettingsAction.defaultFilters());
-						if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
 						dispatch(viewSettingsAction.toggleObjectInfo());
+
+						try {
+							dispatch(viewSettingsAction.activeLoading());
+
+							const responce = await $axios.get(
+								`/api/object_info.php?id=${object.id}`
+							);
+							console.log(responce);
+
+							dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
+							dispatch(viewSettingsAction.defaultFilters());
+							if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
+						} catch (error) {
+							console.log(error);
+						} finally {
+							dispatch(viewSettingsAction.defaultLoading());
+						}
 					};
 
 					return (

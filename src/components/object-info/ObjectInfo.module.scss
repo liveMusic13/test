@@ -3,7 +3,11 @@
 
 .block__info {
 	height: 100%;
-	min-width: adapt(283px, 1440px);
+	width: adapt(300px, 1440px);
+	position: absolute;
+	z-index: 6001;
+	left: 0;
+	background-color: $color_three;
 
 	@media (max-width: 991.98px) {
 		min-width: adapt(300px, 1440px);
@@ -11,6 +15,7 @@
 
 	@media (max-width: 767.98px) {
 		width: 100%;
+		position: relative;
 	}
 
 	> .block__title {
@@ -22,6 +27,10 @@
 		border-bottom: 1px solid $color_four;
 		border-left: 1px solid $color_four;
 		height: adapt(52px, 1440px);
+
+		@media (max-width: 767.98px) {
+			height: adapt(110px, 1440px);
+		}
 
 		> .title {
 			font-size: 1rem;
