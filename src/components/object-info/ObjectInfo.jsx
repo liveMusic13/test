@@ -33,7 +33,8 @@ const ObjectInfo = ({ isDisplay }) => {
 							style={{
 								borderBottom: '1px solid #e0e0e0',
 								padding: 'calc(20/1440 * 100vw) 0px',
-								marginTop: '0px',
+								margin: '0px calc(16/1440 * 100vw)',
+								width: '90%',
 							}}
 						>
 							<Loading height='calc(67/1440 * 100vw)' />
@@ -43,7 +44,8 @@ const ObjectInfo = ({ isDisplay }) => {
 							style={{
 								borderBottom: '1px solid #e0e0e0',
 								padding: 'calc(20/1440 * 100vw) 0px',
-								marginTop: '0px',
+								margin: '0px calc(16/1440 * 100vw)',
+								width: '90%',
 							}}
 						>
 							<Loading height='calc(67/1440 * 100vw)' />
@@ -53,7 +55,8 @@ const ObjectInfo = ({ isDisplay }) => {
 							style={{
 								borderBottom: '1px solid #e0e0e0',
 								padding: 'calc(20/1440 * 100vw) 0px',
-								marginTop: '0px',
+								margin: '0px calc(16/1440 * 100vw)',
+								width: '90%',
 							}}
 						>
 							<Loading height='calc(67/1440 * 100vw)' />
@@ -63,7 +66,8 @@ const ObjectInfo = ({ isDisplay }) => {
 							style={{
 								borderBottom: '1px solid #e0e0e0',
 								padding: 'calc(20/1440 * 100vw) 0px',
-								marginTop: '0px',
+								margin: '0px calc(16/1440 * 100vw)',
+								width: '90%',
 							}}
 						>
 							<Loading height='calc(67/1440 * 100vw)' />
@@ -73,7 +77,8 @@ const ObjectInfo = ({ isDisplay }) => {
 							style={{
 								borderBottom: '1px solid #e0e0e0',
 								padding: 'calc(20/1440 * 100vw) 0px',
-								marginTop: '0px',
+								margin: '0px calc(16/1440 * 100vw)',
+								width: '90%',
 							}}
 						>
 							<Loading height='calc(67/1440 * 100vw)' />
