@@ -11,6 +11,7 @@ import SettingsMap from '../../settings-map/SettingsMap';
 
 const Home = () => {
 	const dispatch = useDispatch();
+	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
 	const viewSettings = useSelector(state => state.viewSettings);
 	const { windowSize, setWindowSize } = useCheckWidth();
 	const location = useLocation();
@@ -31,21 +32,22 @@ const Home = () => {
 	// 	getObject();
 	// }, []);
 
+	const getObject = async () => {
+		try {
+			dispatch(ViewSettingsActions.activeLoading());
+
+			const response = await $axios.get(`/api/get_objects.php?map=${map}`);
+			console.log(response.data);
+			dispatch(dataObjectsInMapAction.addDataObjectsInMap(response.data));
+		} catch (error) {
+			console.log(error);
+		} finally {
+			dispatch(ViewSettingsActions.defaultLoading());
+		}
+	};
+
 	useEffect(() => {
 		navigate(`?map=247`);
-		const getObject = async () => {
-			try {
-				dispatch(ViewSettingsActions.activeLoading());
-
-				const response = await $axios.get(`/api/get_objects.php?map=${map}`);
-				console.log(response.data);
-				dispatch(dataObjectsInMapAction.addDataObjectsInMap(response.data));
-			} catch (error) {
-				console.log(error);
-			} finally {
-				dispatch(ViewSettingsActions.defaultLoading());
-			}
-		};
 
 		if (map) {
 			getObject();

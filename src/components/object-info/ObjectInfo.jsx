@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useCheckWidth } from '../../hooks/useCheckWidth';
 import { actions as viewSettingsAction } from '../../store/view-settings/ViewSettings.slice';
 import Loading from '../ui/loading/Loading';
 import styles from './ObjectInfo.module.scss';
@@ -7,6 +8,7 @@ const ObjectInfo = ({ isDisplay }) => {
 	const viewSettings = useSelector(state => state.viewSettings);
 	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
 	const dispatch = useDispatch();
+	const { windowSize, setWindowSize } = useCheckWidth();
 
 	return (
 		<div
@@ -28,59 +30,19 @@ const ObjectInfo = ({ isDisplay }) => {
 			<div className={styles.block__aboutObjects}>
 				{viewSettings.isLoadingObject ? (
 					<>
-						<div
-							className={styles.block__descriptionInfo}
-							style={{
-								borderBottom: '1px solid #e0e0e0',
-								padding: 'calc(20/1440 * 100vw) 0px',
-								margin: '0px calc(16/1440 * 100vw)',
-								width: '90%',
-							}}
-						>
+						<div className={styles.block__loader}>
 							<Loading height='calc(67/1440 * 100vw)' />
 						</div>
-						<div
-							className={styles.block__descriptionInfo}
-							style={{
-								borderBottom: '1px solid #e0e0e0',
-								padding: 'calc(20/1440 * 100vw) 0px',
-								margin: '0px calc(16/1440 * 100vw)',
-								width: '90%',
-							}}
-						>
+						<div className={styles.block__loader}>
 							<Loading height='calc(67/1440 * 100vw)' />
 						</div>
-						<div
-							className={styles.block__descriptionInfo}
-							style={{
-								borderBottom: '1px solid #e0e0e0',
-								padding: 'calc(20/1440 * 100vw) 0px',
-								margin: '0px calc(16/1440 * 100vw)',
-								width: '90%',
-							}}
-						>
+						<div className={styles.block__loader}>
 							<Loading height='calc(67/1440 * 100vw)' />
 						</div>
-						<div
-							className={styles.block__descriptionInfo}
-							style={{
-								borderBottom: '1px solid #e0e0e0',
-								padding: 'calc(20/1440 * 100vw) 0px',
-								margin: '0px calc(16/1440 * 100vw)',
-								width: '90%',
-							}}
-						>
+						<div className={styles.block__loader}>
 							<Loading height='calc(67/1440 * 100vw)' />
 						</div>
-						<div
-							className={styles.block__descriptionInfo}
-							style={{
-								borderBottom: '1px solid #e0e0e0',
-								padding: 'calc(20/1440 * 100vw) 0px',
-								margin: '0px calc(16/1440 * 100vw)',
-								width: '90%',
-							}}
-						>
+						<div className={styles.block__loader}>
 							<Loading height='calc(67/1440 * 100vw)' />
 						</div>
 					</>

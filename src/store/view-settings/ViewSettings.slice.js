@@ -8,6 +8,7 @@ const initialState = {
 	isObjectInfo: false,
 	isLoading: false,
 	isLoadingObject: false,
+	isDisplay: true,
 };
 
 export const viewSettings = createSlice({
@@ -38,6 +39,12 @@ export const viewSettings = createSlice({
 		},
 		activeLoadingObject: (state, { payload }) => {
 			return { ...state, isLoadingObject: true };
+		},
+		activeDisplay: (state, { payload }) => {
+			return { ...state, isDisplay: true };
+		},
+		defaultDisplay: (state, { payload }) => {
+			return { ...state, isDisplay: false };
 		},
 		defaultLoadingObject: (state, { payload }) => {
 			return { ...state, isLoadingObject: false };

@@ -121,5 +121,19 @@
 				}
 			}
 		}
+
+		> .block__loader {
+			width: 90%;
+			min-height: adapt(67px, 1440px);
+			margin-top: adapt(8px, 1440px);
+			padding: 0px adapt(16px, 1440px);
+			border-bottom: 1px solid $color_four;
+			padding: adapt(20px, 1440px) 0px;
+			margin: 0px adapt(16px, 1440px);
+
+			@media (max-width: 767.98px) {
+				width: 98%;
+			}
+		}
 	}
 }

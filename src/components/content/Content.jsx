@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCheckWidth } from '../../hooks/useCheckWidth';
+import { actions as viewSettingsAction } from '../../store/view-settings/ViewSettings.slice';
 import AllObjects from '../all-objects/AllObjects';
 import CustomMap from '../custom-map/CustomMap';
 import ObjectInfo from '../object-info/ObjectInfo';
@@ -11,9 +12,17 @@ const Content = () => {
 	const viewSettings = useSelector(state => state.viewSettings);
 	const { windowSize, setWindowSize } = useCheckWidth();
 	const [isDisplay, setIsDisplay] = useState(true);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (windowSize <= 768) setIsDisplay(false);
+		if (windowSize <= 768) {
+			setIsDisplay(false);
+			dispatch(viewSettingsAction.defaultDisplay(''));
+		} else if (windowSize >= 768) {
+			setIsDisplay(true);
+			dispatch(viewSettingsAction.activeDisplay(''));
+		}
+		console.log(windowSize);
 	}, [windowSize]);
 
 	return (

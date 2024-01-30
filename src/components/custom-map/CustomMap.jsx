@@ -23,6 +23,10 @@ const CustomMap = () => {
 		}
 	}, [windowSize.width]);
 
+	useEffect(() => {
+		console.log('ok');
+	}, [dataObjectsInMap]);
+
 	return (
 		<MapContainer
 			center={[55.7522, 37.6156]}
@@ -39,45 +43,88 @@ const CustomMap = () => {
 			<TileLayer url='https://www.moscowmap.ru/leaflet/tiles/{z}/{x}/{y}.png' />
 			<MarkerClusterGroup chunkedLoading>
 				{dataObjectsInMap.points.map(object => {
-					const customMarkerIcon = divIcon({
-						className: 'my-custom-icon',
-						iconSize: [10, 10],
-						html: renderToStaticMarkup(
-							<IconMarker srcIcon={object.icon} colorIcon={object.color} />
-						),
-					});
+					if (object && object.crd) {
+						const customMarkerIcon = divIcon({
+							className: 'my-custom-icon',
+							iconSize: [10, 10],
+							html: renderToStaticMarkup(
+								<IconMarker srcIcon={object.icon} colorIcon={object.color} />
+							),
+						});
 
-					const getObjectInfo = async () => {
-						dispatch(viewSettingsAction.toggleObjectInfo());
-
-						try {
-							dispatch(viewSettingsAction.activeLoadingObject());
-
-							const responce = await $axios.get(
-								`/api/object_info.php?id=${object.id}`
-							);
-							console.log(responce);
-
-							dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
-							dispatch(viewSettingsAction.defaultFilters());
+						const getObjectInfo = async () => {
 							if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
-						} catch (error) {
-							console.log(error);
-						} finally {
-							dispatch(viewSettingsAction.defaultLoadingObject());
-						}
-					};
+							dispatch(viewSettingsAction.toggleObjectInfo());
 
-					return (
-						<Marker
-							key={object.id}
-							position={object.crd}
-							icon={customMarkerIcon}
-							eventHandlers={{ click: getObjectInfo }}
-						>
-							<Popup>{object.name}</Popup>
-						</Marker>
-					);
+							try {
+								dispatch(viewSettingsAction.activeLoadingObject());
+
+								const responce = await $axios.get(
+									`/api/object_info.php?id=${object.id}`
+								);
+								console.log(responce);
+
+								dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
+								dispatch(viewSettingsAction.defaultFilters());
+								// if (isMobile)
+								// 	dispatch(viewSettingsAction.activeSettingsMap(''));
+							} catch (error) {
+								console.log(error);
+							} finally {
+								dispatch(viewSettingsAction.defaultLoadingObject());
+							}
+						};
+
+						return (
+							<Marker
+								key={object.id}
+								position={object.crd}
+								icon={customMarkerIcon}
+								eventHandlers={{ click: getObjectInfo }}
+							>
+								<Popup>{object.name}</Popup>
+							</Marker>
+						);
+					}
+					// const customMarkerIcon = divIcon({
+					// 	className: 'my-custom-icon',
+					// 	iconSize: [10, 10],
+					// 	html: renderToStaticMarkup(
+					// 		<IconMarker srcIcon={object.icon} colorIcon={object.color} />
+					// 	),
+					// });
+
+					// const getObjectInfo = async () => {
+					// 	dispatch(viewSettingsAction.toggleObjectInfo());
+
+					// 	try {
+					// 		dispatch(viewSettingsAction.activeLoadingObject());
+
+					// 		const responce = await $axios.get(
+					// 			`/api/object_info.php?id=${object.id}`
+					// 		);
+					// 		console.log(responce);
+
+					// 		dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
+					// 		dispatch(viewSettingsAction.defaultFilters());
+					// 		if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
+					// 	} catch (error) {
+					// 		console.log(error);
+					// 	} finally {
+					// 		dispatch(viewSettingsAction.defaultLoadingObject());
+					// 	}
+					// };
+
+					// return (
+					// 	<Marker
+					// 		key={object.id}
+					// 		position={object.crd}
+					// 		icon={customMarkerIcon}
+					// 		eventHandlers={{ click: getObjectInfo }}
+					// 	>
+					// 		<Popup>{object.name}</Popup>
+					// 	</Marker>
+					// );
 				})}
 			</MarkerClusterGroup>
 		</MapContainer>
