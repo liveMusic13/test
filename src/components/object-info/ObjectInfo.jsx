@@ -26,7 +26,7 @@ const ObjectInfo = ({ isDisplay }) => {
 				</button>
 			</div>
 			<div className={styles.block__aboutObjects}>
-				{viewSettings.isLoading ? (
+				{viewSettings.isLoadingObject ? (
 					<>
 						<div
 							className={styles.block__descriptionInfo}

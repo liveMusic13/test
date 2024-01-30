@@ -51,7 +51,7 @@ const CustomMap = () => {
 						dispatch(viewSettingsAction.toggleObjectInfo());
 
 						try {
-							dispatch(viewSettingsAction.activeLoading());
+							dispatch(viewSettingsAction.activeLoadingObject());
 
 							const responce = await $axios.get(
 								`/api/object_info.php?id=${object.id}`
@@ -64,7 +64,7 @@ const CustomMap = () => {
 						} catch (error) {
 							console.log(error);
 						} finally {
-							dispatch(viewSettingsAction.defaultLoading());
+							dispatch(viewSettingsAction.defaultLoadingObject());
 						}
 					};
 
