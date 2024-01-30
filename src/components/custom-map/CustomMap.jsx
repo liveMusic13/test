@@ -42,7 +42,7 @@ const CustomMap = () => {
 		>
 			<TileLayer url='https://www.moscowmap.ru/leaflet/tiles/{z}/{x}/{y}.png' />
 			<MarkerClusterGroup chunkedLoading>
-				{dataObjectsInMap.points.map(object => {
+				{dataObjectsInMap?.points?.map(object => {
 					if (object && object.crd) {
 						const customMarkerIcon = divIcon({
 							className: 'my-custom-icon',
@@ -66,8 +66,6 @@ const CustomMap = () => {
 
 								dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
 								dispatch(viewSettingsAction.defaultFilters());
-								// if (isMobile)
-								// 	dispatch(viewSettingsAction.activeSettingsMap(''));
 							} catch (error) {
 								console.log(error);
 							} finally {
