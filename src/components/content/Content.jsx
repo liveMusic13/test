@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useCheckWidth } from '../../hooks/useCheckWidth';
 import AllObjects from '../all-objects/AllObjects';
-// import CustomMap from '../custom-map/CustomMap';
+import CustomMap from '../custom-map/CustomMap';
 import ObjectInfo from '../object-info/ObjectInfo';
 import Filters from '../ui/filters/Filters';
 import styles from './Content.module.scss';
@@ -21,12 +21,12 @@ const Content = () => {
 			{viewSettings.isViewFilters && <Filters isDisplay={isDisplay} />}
 			{viewSettings.isObjectInfo && <ObjectInfo isDisplay={isDisplay} />}
 			{viewSettings.isViewObjects && <AllObjects isDisplay={isDisplay} />}
-			{/* <div className={styles.block__map}>
+			<div className={styles.block__map}>
 				<CustomMap />
 				<div className={styles.logo__image}>
 					<a href='https://mosmap.ru'></a>
 				</div>
-			</div> */}
+			</div>
 		</div>
 	);
 };

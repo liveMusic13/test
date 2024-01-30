@@ -9,8 +9,6 @@ import Content from '../../content/Content';
 import Header from '../../header/Header';
 import SettingsMap from '../../settings-map/SettingsMap';
 
-import { actions as dataObjectInfoAction } from '../../../store/data-object-info/DataObjectInfo.slice';
-
 const Home = () => {
 	const dispatch = useDispatch();
 	const viewSettings = useSelector(state => state.viewSettings);
@@ -62,32 +60,32 @@ const Home = () => {
 		}
 	}, [windowSize.width]);
 
-	const getObjectInfo = async () => {
-		dispatch(ViewSettingsActions.toggleObjectInfo());
+	// const getObjectInfo = async () => {
+	// 	dispatch(ViewSettingsActions.toggleObjectInfo());
 
-		try {
-			dispatch(ViewSettingsActions.activeLoading());
+	// 	try {
+	// 		dispatch(ViewSettingsActions.activeLoading());
 
-			const responce = await $axios.get(
-				// `/api/object_info.php?id=${object.id}`
-				`/api/object_info.php?id=97823`
-			);
-			console.log(responce);
+	// 		const responce = await $axios.get(
+	// 			// `/api/object_info.php?id=${object.id}`
+	// 			`/api/object_info.php?id=97823`
+	// 		);
+	// 		console.log(responce);
 
-			dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
-			dispatch(ViewSettingsActions.defaultFilters());
-			if (isMobile) dispatch(ViewSettingsActions.activeSettingsMap(''));
-		} catch (error) {
-			console.log(error);
-		} finally {
-			dispatch(ViewSettingsActions.defaultLoading());
-		}
-	};
+	// 		dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
+	// 		dispatch(ViewSettingsActions.defaultFilters());
+	// 		if (isMobile) dispatch(ViewSettingsActions.activeSettingsMap(''));
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	} finally {
+	// 		dispatch(ViewSettingsActions.defaultLoading());
+	// 	}
+	// };
 
 	return (
 		<div style={{ height: '100%' }}>
 			<Header />
-			<button onClick={getObjectInfo}>test</button>
+			{/* <button onClick={getObjectInfo}>test</button> */}
 			<Content />
 			{/* {viewSettings.isViewBurger && <BurgerMenu />} */}
 			{viewSettings.isSettingsMap && <SettingsMap />}
