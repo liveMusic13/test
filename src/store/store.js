@@ -8,12 +8,14 @@ import {
 import { Iterable } from 'immutable';
 import { reducer as dataObjectInfo } from './data-object-info/DataObjectInfo.slice';
 import { reducer as dataObjectsInMap } from './data-objects-in-map/DataObjectsInMap.slice';
+import { reducer as userMap } from './user-map/UserMap.slice';
 import { reducer as viewSettings } from './view-settings/ViewSettings.slice';
 
 const reducers = combineReducers({
 	viewSettings: viewSettings,
 	dataObjectsInMap: dataObjectsInMap,
 	dataObjectInfo: dataObjectInfo,
+	userMap: userMap,
 });
 
 const isSerializable = value => Iterable.isIterable(value) || isPlain(value);

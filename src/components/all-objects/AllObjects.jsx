@@ -49,16 +49,16 @@ const AllObjects = ({ isDisplay }) => {
 				<div className={styles.allObjects}>
 					<p className={styles.description}>Всего объектов в списке:</p>
 					<p className={styles.value}>
-						{dataObjectsInMap['all-points']
-							? dataObjectsInMap['all-points']
+						{dataObjectsInMap.points['all-points']
+							? dataObjectsInMap.points['all-points']
 							: '0'}
 					</p>
 				</div>
 				<div className={styles.allObjects__inMap}>
 					<p className={styles.description}>Всего объектов на карте:</p>
 					<p className={styles.value}>
-						{dataObjectsInMap['all-points']
-							? dataObjectsInMap['all-points']
+						{dataObjectsInMap.points['all-points']
+							? dataObjectsInMap.points['all-points']
 							: '0'}
 					</p>
 				</div>
@@ -83,7 +83,7 @@ const AllObjects = ({ isDisplay }) => {
 						</div>
 					</>
 				) : (
-					dataObjectsInMap?.points?.slice(0, numDisplayed).map(elem => {
+					dataObjectsInMap?.points?.points?.slice(0, numDisplayed).map(elem => {
 						return (
 							<div key={elem.id} className={styles.object}>
 								<p>{elem.name}</p>

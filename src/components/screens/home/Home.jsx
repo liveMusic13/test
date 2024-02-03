@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { $axios } from '../../../api';
 import { useCheckWidth } from '../../../hooks/useCheckWidth';
 import { actions as dataObjectsInMapAction } from '../../../store/data-objects-in-map/DataObjectsInMap.slice';
+import { actions as userMapAction } from '../../../store/user-map/UserMap.slice';
 import { actions as ViewSettingsActions } from '../../../store/view-settings/ViewSettings.slice';
 import Content from '../../content/Content';
 import Header from '../../header/Header';
@@ -11,13 +12,19 @@ import SettingsMap from '../../settings-map/SettingsMap';
 
 const Home = () => {
 	const dispatch = useDispatch();
-	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
+	const userMap = useSelector(state => state.userMap);
 	const viewSettings = useSelector(state => state.viewSettings);
-	const { windowSize, setWindowSize } = useCheckWidth();
+	const { windowSize } = useCheckWidth();
 	const location = useLocation();
 	const navigate = useNavigate();
 	const searchParams = new URLSearchParams(location.search);
 	const map = searchParams.get('map');
+
+	useEffect(() => {
+		dispatch(userMapAction.addNumMap(map));
+	}, []);
+
+	// const map = searchParams.get(userMap);
 
 	// useEffect(() => {
 	// 	const getObject = async () => {
@@ -81,6 +88,18 @@ const Home = () => {
 	// 		console.log(error);
 	// 	} finally {
 	// 		dispatch(ViewSettingsActions.defaultLoading());
+	// 	}
+	// };
+
+	// const getObjectInfo = async () => {
+	// 	try {
+	// 		const responce = await $axios.get(
+	// 			'https://mosmap.ru/api/filters.php?map=2'
+	// 		);
+
+	// 		console.log(responce);
+	// 	} catch (error) {
+	// 		console.log(error);
 	// 	}
 	// };
 

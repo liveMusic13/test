@@ -24,7 +24,6 @@ export const viewSettings = createSlice({
 		toggleObjectInfo: (state, { payload }) => {
 			return { ...state, isObjectInfo: true };
 		},
-
 		// toggleBurger: (state, { payload }) => {
 		// 	return { ...state, isViewBurger: !state.isViewBurger };
 		// },

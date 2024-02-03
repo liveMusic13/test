@@ -1,19 +1,17 @@
 import Button from '../ui/button/Button';
 import styles from './Header.module.scss';
-import { arrayNumIcons, arrayNumSettingIcons } from './icons.data';
+import { arrayNumSettingIcons } from './icons.data';
 
 const Header = () => {
-	// const dispatch = useDispatch();
-
 	return (
 		<header className={styles.header}>
 			<div className={styles.map__buttons}>
-				{arrayNumIcons.map(icon => {
+				{/* {arrayNumIcons.map(icon => {
 					return <Button key={icon.id} icon={icon} />;
-				})}
+				})} */}
 				<div className={styles.block__title}>
-					<div className={styles.line}></div>
-					<div className={styles.line}></div>
+					{/* <div className={styles.line}></div>
+					<div className={styles.line}></div> */}
 					<h1 className={styles.title}>Тестовая карта</h1>
 				</div>
 			</div>

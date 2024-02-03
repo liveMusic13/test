@@ -10,7 +10,7 @@ import styles from './Content.module.scss';
 
 const Content = () => {
 	const viewSettings = useSelector(state => state.viewSettings);
-	const { windowSize, setWindowSize } = useCheckWidth();
+	const { windowSize } = useCheckWidth();
 	const [isDisplay, setIsDisplay] = useState(true);
 	const dispatch = useDispatch();
 
@@ -22,7 +22,6 @@ const Content = () => {
 			setIsDisplay(true);
 			dispatch(viewSettingsAction.activeDisplay(''));
 		}
-		console.log(windowSize);
 	}, [windowSize]);
 
 	return (
