@@ -70,6 +70,7 @@ const CustomMap = () => {
 	const { windowSize } = useCheckWidth();
 	const [isMobile, setIsMobile] = useState(false);
 	// const [isZoom, setIsZoom] = useState(false); HELP: ДЛЯ ОТРИСОВКИ МАРКЕРОВ ТОЛЬКО НА ВИДИМОЙ ЧАСТИ КАРТЫ
+	const [displayedObjects, setDisplayedObjects] = useState([]);
 
 	useEffect(() => {
 		if (windowSize.width <= 767.98) {
@@ -82,6 +83,22 @@ const CustomMap = () => {
 	}, [dataObjectsInMap]);
 
 	const [zoomLevel, setZoomLevel] = useState(13);
+
+	// const [index, setIndex] = useState(0); HELP: ДЛЯ ПОСТЕПЕННОГО ОТОБРАЖЕНИЯ ОБЪЕКТОВ
+
+	// useEffect(() => {
+	// 	const intervalId = setInterval(() => {
+	// 		if (index < dataObjectsInMap?.points?.points?.length) {
+	// 			setDisplayedObjects(prevObjects => [
+	// 				...prevObjects,
+	// 				...dataObjectsInMap?.points?.points?.slice(index, index + 2000),
+	// 			]);
+	// 			setIndex(index + 2000);
+	// 		}
+	// 	}, 2000);
+
+	// 	return () => clearInterval(intervalId); // Очистка при размонтировании
+	// }, [dataObjectsInMap, index]);
 
 	return (
 		<MapContainer
@@ -104,6 +121,9 @@ const CustomMap = () => {
 					: dataObjectsInMap?.points?.points
 				)?.map(object => { */}
 				{dataObjectsInMap?.points?.points?.map(object => {
+					{
+						/* {displayedObjects.map(object => { HELP: ДЛЯ ПОСТЕПЕННОГО ОТОБРАЖЕНИЯ ОБЪЕКТОВ */
+					}
 					if (object && object.crd) {
 						const getObjectInfo = async () => {
 							if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));

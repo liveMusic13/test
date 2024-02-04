@@ -12,10 +12,6 @@
 	background-color: $color_three;
 	height: 100%;
 
-	// background: linear-gradient(270deg, $color_two, $color_three);
-	// background-size: 200% 200%;
-	// animation: gradient 2s ease infinite;
-
 	@media (max-width: 991.98px) {
 		min-width: adapt(300px, 1440px);
 	}

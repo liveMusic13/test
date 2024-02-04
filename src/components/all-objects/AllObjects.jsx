@@ -17,7 +17,7 @@ const AllObjects = ({ isDisplay }) => {
 					setNumDisplayed(prevNum => prevNum + 20);
 				}
 			},
-			{ threshold: 1 }
+			{ threshold: 0 }
 		);
 
 		if (loader.current) {
@@ -25,7 +25,7 @@ const AllObjects = ({ isDisplay }) => {
 		}
 
 		return () => observer.disconnect();
-	}, []);
+	}, [dataObjectsInMap]);
 
 	const mapIcon = {
 		id: 0,
@@ -92,7 +92,8 @@ const AllObjects = ({ isDisplay }) => {
 						);
 					})
 				)}
-				{/* <div ref={loader}>Загрузка...</div> */}
+				{/* HELP: ЧТОБЫ БЫ СРАБАТЫВАЛА ПОДГРУЗКА ДАННЫХ В КОНЦЕ СКРОЛА ДОБАВЛЯЕМ БЛОК*/}
+				<div ref={loader} style={{ height: '1px' }}></div>
 			</div>
 		</div>
 	);
