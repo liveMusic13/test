@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { $axios } from '../../../api';
 import BlockInput from '../block-input/BlockInput';
@@ -8,11 +9,12 @@ const Filters = ({ isDisplay }) => {
 	const dataFilters = useSelector(state => state.dataFilters);
 	const adresFilterString = useSelector(state => state.adresFilterString);
 	const userMap = useSelector(state => state.userMap);
+	const [clearFilter, setClearFilter] = useState(false);
 
 	const getFiltersObjects = async () => {
 		try {
 			const responce = await $axios.get(
-				`/api/get_objects.php?map=${userMap}${adresFilterString}`
+				`/api/get_objects.php?map=${userMap.map}${adresFilterString.srcRequest}`
 			);
 			console.log(responce.data);
 		} catch (error) {
@@ -34,6 +36,7 @@ const Filters = ({ isDisplay }) => {
 								key={field.id}
 								title={field.caption}
 								name={field.name}
+								clearFilter={clearFilter}
 							/>
 						);
 					} else {
@@ -44,12 +47,25 @@ const Filters = ({ isDisplay }) => {
 								title={field.caption}
 								isImage={field.multiple === 1 ? true : false}
 								dataSelect={field}
+								clearFilter={clearFilter}
 							/>
 						);
 					}
 				})}
 				<div className={styles.block__buttons}>
-					<button className={styles.button_clear}>очистить</button>
+					<button
+						className={styles.button_clear}
+						onClick={() => {
+							setClearFilter(true);
+
+							const timeoutId = setTimeout(() => {
+								setClearFilter(false);
+							}, 1000);
+							return () => clearTimeout(timeoutId);
+						}}
+					>
+						очистить
+					</button>
 					<button className={styles.button} onClick={getFiltersObjects}>
 						показать
 					</button>

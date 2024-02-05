@@ -11,6 +11,9 @@ export const adresFilterString = createSlice({
 		addGetParams: (state, { payload }) => {
 			state.srcRequest = payload;
 		},
+		clearGetParams: (state, { payload }) => {
+			state.srcRequest = '';
+		},
 	},
 });
 

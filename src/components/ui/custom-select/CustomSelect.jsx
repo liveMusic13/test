@@ -6,7 +6,13 @@ import { actions as adresFilterStringAction } from '../../../store/adres-filter-
 import { transformFieldForSelect } from '../../../utils/transformFieldForSelect';
 import styles from './CustomSelect.module.scss';
 
-const CustomSelect = ({ isMultiChoice, title, isImage, dataSelect }) => {
+const CustomSelect = ({
+	isMultiChoice,
+	title,
+	isImage,
+	dataSelect,
+	clearFilter,
+}) => {
 	const [selectedOption, setSelectedOption] = useState(null);
 	const optionsAgent = transformFieldForSelect(dataSelect.items);
 	const navigate = useNavigate();
@@ -40,6 +46,13 @@ const CustomSelect = ({ isMultiChoice, title, isImage, dataSelect }) => {
 	useEffect(() => {
 		dispatch(adresFilterStringAction.addGetParams(search));
 	}, [search]);
+
+	useEffect(() => {
+		if (clearFilter) {
+			setSelectedOption(null);
+			dispatch(adresFilterStringAction.clearGetParams(''));
+		}
+	}, [clearFilter]);
 
 	const customStyles = {
 		option: (provided, state) => {

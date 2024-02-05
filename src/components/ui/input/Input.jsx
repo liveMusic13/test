@@ -1,17 +1,18 @@
 import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { actions as adresFilterStringAction } from '../../../store/adres-filter-string/AdresFilterString.slice';
 import styles from './Input.module.scss';
 
-const Input = ({ placeholder, name }) => {
+const Input = ({ placeholder, name, clearFilter }) => {
 	const [test, setTest] = useState('');
 	const [isInputValid, setIsInputValid] = useState(true);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { search } = useLocation();
 	const [searchParams, setSearchParams] = useSearchParams();
+	const userMap = useSelector(state => state.userMap);
 
 	const updateURL = debounce((name, value) => {
 		setSearchParams(prevPar => {
@@ -39,6 +40,14 @@ const Input = ({ placeholder, name }) => {
 	useEffect(() => {
 		dispatch(adresFilterStringAction.addGetParams(search));
 	}, [search]);
+
+	useEffect(() => {
+		if (clearFilter) {
+			setTest('');
+			setSearchParams({ map: userMap.map });
+			dispatch(adresFilterStringAction.clearGetParams(''));
+		}
+	}, [clearFilter]);
 
 	return (
 		<div className={styles.wrapper_input}>
