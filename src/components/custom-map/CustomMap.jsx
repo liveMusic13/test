@@ -70,17 +70,13 @@ const CustomMap = () => {
 	const { windowSize } = useCheckWidth();
 	const [isMobile, setIsMobile] = useState(false);
 	// const [isZoom, setIsZoom] = useState(false); HELP: ДЛЯ ОТРИСОВКИ МАРКЕРОВ ТОЛЬКО НА ВИДИМОЙ ЧАСТИ КАРТЫ
-	const [displayedObjects, setDisplayedObjects] = useState([]);
+	// const [displayedObjects, setDisplayedObjects] = useState([]);HELP: ДЛЯ ПОСТЕПЕННОГО ОТОБРАЖЕНИЯ ОБЪЕКТОВ
 
 	useEffect(() => {
 		if (windowSize.width <= 767.98) {
 			setIsMobile(true);
 		}
 	}, [windowSize.width]);
-
-	useEffect(() => {
-		console.log('ok');
-	}, [dataObjectsInMap]);
 
 	const [zoomLevel, setZoomLevel] = useState(13);
 

@@ -1,28 +1,43 @@
+import { useSelector } from 'react-redux';
+import BlockInput from '../block-input/BlockInput';
 import CustomSelect from '../custom-select/CustomSelect';
-import Input from '../input/Input';
 import styles from './Filters.module.scss';
 
 const Filters = ({ isDisplay }) => {
+	const dataFilters = useSelector(state => state.dataFilters);
+
 	return (
 		<div
 			className={styles.block__filters}
 			style={isDisplay ? {} : { display: 'none' }}
 		>
 			<h2 className={styles.title}>Фильтры</h2>
-			<div className={styles.block__inputs}>
-				<h2 className={styles.title__inputs}>Количество</h2>
-				<div className={styles.inputs}>
-					<Input placeholder='От' />
-					<Input placeholder='До' />
+			<div className={styles.wrapper_block__filters}>
+				{dataFilters.map(field => {
+					if (field.type === 'number') {
+						return (
+							<BlockInput
+								key={field.id}
+								title={field.caption}
+								name={field.name}
+							/>
+						);
+					} else {
+						return (
+							<CustomSelect
+								key={field.id}
+								isMultiChoice={field.multiple === 1 ? true : false}
+								title={field.caption}
+								isImage={field.multiple === 1 ? true : false}
+								dataSelect={field}
+							/>
+						);
+					}
+				})}
+				<div className={styles.block__buttons}>
+					<button className={styles.button_clear}>очистить</button>
+					<button className={styles.button}>показать</button>
 				</div>
-			</div>
-			<CustomSelect isMultiChoice={true} title='Тип клиента' isImage={true} />
-			<CustomSelect isMultiChoice={false} title='Агент' isImage={false} />
-			<CustomSelect isMultiChoice={false} title='test' isImage={false} />
-			<CustomSelect isMultiChoice={true} title='Округа' isImage={true} />
-			<div className={styles.block__buttons}>
-				<button className={styles.button_clear}>очистить</button>
-				<button className={styles.button}>показать</button>
 			</div>
 		</div>
 	);

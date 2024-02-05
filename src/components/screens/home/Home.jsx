@@ -1,8 +1,10 @@
+import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { $axios } from '../../../api';
 import { useCheckWidth } from '../../../hooks/useCheckWidth';
+import { actions as dataFiltersAction } from '../../../store/data-filters/DataFilters.slice';
 import { actions as dataObjectsInMapAction } from '../../../store/data-objects-in-map/DataObjectsInMap.slice';
 import { actions as userMapAction } from '../../../store/user-map/UserMap.slice';
 import { actions as ViewSettingsActions } from '../../../store/view-settings/ViewSettings.slice';
@@ -17,7 +19,7 @@ const Home = () => {
 	const { windowSize } = useCheckWidth();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const searchParams = new URLSearchParams(location.search);
+	const [searchParams, setSearchParams] = useSearchParams(location.search);
 	const map = searchParams.get('map');
 
 	useEffect(() => {
@@ -53,11 +55,24 @@ const Home = () => {
 		}
 	};
 
+	const getFilters = async () => {
+		try {
+			const responce = await axios.get(
+				`https://mosmap.ru/api/filters.php?map=${map}`
+			);
+			dispatch(dataFiltersAction.addFilters(responce.data));
+			console.log('filters: ', responce);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
 		navigate(`?map=247`);
 
 		if (map) {
 			getObject();
+			getFilters();
 			navigate(`?map=${map}`);
 		}
 	}, [map]);

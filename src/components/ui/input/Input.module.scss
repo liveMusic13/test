@@ -1,6 +1,10 @@
 @import '../../../assets/styles/variables';
 @import '../../../assets/styles/functions';
 
+.wrapper_input {
+	position: relative;
+}
+
 .input {
 	font-size: 1rem;
 	border-bottom: 1px solid $color_one;
@@ -22,4 +26,11 @@
 	@media (max-width: 767.98px) {
 		width: 50%;
 	}
+}
+
+.error {
+	position: absolute;
+	bottom: -50%;
+	left: 5%;
+	font-size: 0.7rem;
 }

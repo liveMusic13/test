@@ -1,22 +1,44 @@
 import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
+import { transformFieldForSelect } from '../../../utils/transformFieldForSelect';
 import styles from './CustomSelect.module.scss';
 
-const optionsAgent = [
-	{ value: 'Вариант 1', label: 'Вариант 1' },
-	{ value: 'Вариант 2', label: 'Вариант 2' },
-	{ value: 'Вариант 3', label: 'Вариант 3' },
-	{ value: 'Вариант 4', label: 'Вариант 4' },
-	{ value: 'Вариант 5', label: 'Вариант 5' },
-	{ value: 'Вариант 6', label: 'Вариант 6' },
-];
-
-const CustomSelect = ({ isMultiChoice, title, isImage }) => {
+const CustomSelect = ({ isMultiChoice, title, isImage, dataSelect }) => {
 	const [selectedOption, setSelectedOption] = useState(null);
+	const optionsAgent = transformFieldForSelect(dataSelect.items);
+	const navigate = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
 
 	const handleChange = selectedOption => {
 		setSelectedOption(selectedOption);
-		console.log(`Option selected:`, selectedOption);
+
+		if (Array.isArray(selectedOption)) {
+			let arrValue = [];
+			if (isMultiChoice) {
+				selectedOption.forEach(option => {
+					arrValue.push(option.value);
+				});
+				console.log(arrValue);
+				setSearchParams(prevPar => {
+					prevPar.set(dataSelect.name, arrValue.join(','));
+				});
+				navigate('?' + searchParams.toString());
+			} else {
+				selectedOption.forEach(option => {
+					console.log(option);
+					setSearchParams(prevPar => {
+						prevPar.set(dataSelect.name, option.value);
+					});
+					navigate('?' + searchParams.toString());
+				});
+			}
+		} else {
+			setSearchParams(prevPar => {
+				prevPar.set(dataSelect.name, selectedOption.value);
+			});
+			navigate('?' + searchParams.toString());
+		}
 	};
 
 	const customStyles = {
