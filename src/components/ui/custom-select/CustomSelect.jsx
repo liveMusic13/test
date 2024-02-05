@@ -10,29 +10,52 @@ const CustomSelect = ({ isMultiChoice, title, isImage, dataSelect }) => {
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
 
+	// const handleChange = selectedOption => {
+	// 	setSelectedOption(selectedOption);
+
+	// 	if (Array.isArray(selectedOption)) { //HELP: ПРОВЕРКА НА МАССИВ, ЕСЛИ ДА, ЗНАЧИТ ЭТО МУЛЬТИСЕЛЕКТ
+	// 		let arrValue = [];
+	// 		if (isMultiChoice) {
+	// 			selectedOption.forEach(option => {
+	// 				arrValue.push(option.value); //HELP: ЗАПИСЬ ВСЕХ ЗНАЧЕНИЙ МУЛЬТИСЛЕКТА В МАССИВ
+	// 			});
+
+	// 			setSearchParams(prevPar => {
+	// 				prevPar.set(dataSelect.name, arrValue.join(',')); //HELP: ЗАПИСЬ ЗНАЧЕНИЙ В СТРОКУ
+	// 			});
+	// 			navigate('?' + searchParams.toString());
+	// 		} else {
+	// 			selectedOption.forEach(option => {
+	// 				console.log(option);
+	// 				setSearchParams(prevPar => {
+	// 					prevPar.set(dataSelect.name, option.value);
+	// 				});
+	// 				navigate('?' + searchParams.toString());
+	// 			});
+	// 		}
+	// 	} else {
+	// 		setSearchParams(prevPar => {
+	// 			prevPar.set(dataSelect.name, selectedOption.value);
+	// 		});
+	// 		navigate('?' + searchParams.toString());
+	// 	}
+	// };
+
 	const handleChange = selectedOption => {
 		setSelectedOption(selectedOption);
 
 		if (Array.isArray(selectedOption)) {
+			//HELP: ПРОВЕРКА НА МАССИВ, ЕСЛИ ДА, ЗНАЧИТ ЭТО МУЛЬТИСЕЛЕКТ
 			let arrValue = [];
-			if (isMultiChoice) {
-				selectedOption.forEach(option => {
-					arrValue.push(option.value);
-				});
-				console.log(arrValue);
-				setSearchParams(prevPar => {
-					prevPar.set(dataSelect.name, arrValue.join(','));
-				});
-				navigate('?' + searchParams.toString());
-			} else {
-				selectedOption.forEach(option => {
-					console.log(option);
-					setSearchParams(prevPar => {
-						prevPar.set(dataSelect.name, option.value);
-					});
-					navigate('?' + searchParams.toString());
-				});
-			}
+
+			selectedOption.forEach(option => {
+				arrValue.push(option.value); //HELP: ЗАПИСЬ ВСЕХ ЗНАЧЕНИЙ МУЛЬТИСЛЕКТА В МАССИВ
+			});
+
+			setSearchParams(prevPar => {
+				prevPar.set(dataSelect.name, arrValue.join(',')); //HELP: ЗАПИСЬ ЗНАЧЕНИЙ В СТРОКУ
+			});
+			navigate('?' + searchParams.toString());
 		} else {
 			setSearchParams(prevPar => {
 				prevPar.set(dataSelect.name, selectedOption.value);
