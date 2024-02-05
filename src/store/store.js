@@ -6,6 +6,7 @@ import {
 	Tuple,
 } from '@reduxjs/toolkit';
 import { Iterable } from 'immutable';
+import { reducer as adresFilterString } from './adres-filter-string/AdresFilterString.slice';
 import { reducer as dataFilters } from './data-filters/DataFilters.slice';
 import { reducer as dataObjectInfo } from './data-object-info/DataObjectInfo.slice';
 import { reducer as dataObjectsInMap } from './data-objects-in-map/DataObjectsInMap.slice';
@@ -18,6 +19,7 @@ const reducers = combineReducers({
 	dataObjectInfo: dataObjectInfo,
 	userMap: userMap,
 	dataFilters: dataFilters,
+	adresFilterString: adresFilterString,
 });
 
 const isSerializable = value => Iterable.isIterable(value) || isPlain(value);

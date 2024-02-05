@@ -1,6 +1,8 @@
-import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
+import { actions as adresFilterStringAction } from '../../../store/adres-filter-string/AdresFilterString.slice';
 import { transformFieldForSelect } from '../../../utils/transformFieldForSelect';
 import styles from './CustomSelect.module.scss';
 
@@ -9,37 +11,8 @@ const CustomSelect = ({ isMultiChoice, title, isImage, dataSelect }) => {
 	const optionsAgent = transformFieldForSelect(dataSelect.items);
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// const handleChange = selectedOption => {
-	// 	setSelectedOption(selectedOption);
-
-	// 	if (Array.isArray(selectedOption)) { //HELP: ПРОВЕРКА НА МАССИВ, ЕСЛИ ДА, ЗНАЧИТ ЭТО МУЛЬТИСЕЛЕКТ
-	// 		let arrValue = [];
-	// 		if (isMultiChoice) {
-	// 			selectedOption.forEach(option => {
-	// 				arrValue.push(option.value); //HELP: ЗАПИСЬ ВСЕХ ЗНАЧЕНИЙ МУЛЬТИСЛЕКТА В МАССИВ
-	// 			});
-
-	// 			setSearchParams(prevPar => {
-	// 				prevPar.set(dataSelect.name, arrValue.join(',')); //HELP: ЗАПИСЬ ЗНАЧЕНИЙ В СТРОКУ
-	// 			});
-	// 			navigate('?' + searchParams.toString());
-	// 		} else {
-	// 			selectedOption.forEach(option => {
-	// 				console.log(option);
-	// 				setSearchParams(prevPar => {
-	// 					prevPar.set(dataSelect.name, option.value);
-	// 				});
-	// 				navigate('?' + searchParams.toString());
-	// 			});
-	// 		}
-	// 	} else {
-	// 		setSearchParams(prevPar => {
-	// 			prevPar.set(dataSelect.name, selectedOption.value);
-	// 		});
-	// 		navigate('?' + searchParams.toString());
-	// 	}
-	// };
+	const dispatch = useDispatch();
+	const { search } = useLocation();
 
 	const handleChange = selectedOption => {
 		setSelectedOption(selectedOption);
@@ -63,6 +36,10 @@ const CustomSelect = ({ isMultiChoice, title, isImage, dataSelect }) => {
 			navigate('?' + searchParams.toString());
 		}
 	};
+
+	useEffect(() => {
+		dispatch(adresFilterStringAction.addGetParams(search));
+	}, [search]);
 
 	const customStyles = {
 		option: (provided, state) => {
