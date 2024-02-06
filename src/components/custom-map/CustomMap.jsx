@@ -8,6 +8,7 @@ import {
 	Polygon,
 	Popup,
 	TileLayer,
+	useMap,
 	useMapEvents,
 } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
@@ -64,11 +65,38 @@ const ZoomTracker = ({ setZoomLevel }) => {
 	return null;
 };
 
+const FlyToLocation = ({
+	centerMapObject,
+	isInitialized,
+	setIsInitialized,
+}) => {
+	const map = useMap();
+
+	// useEffect(() => {
+	// 	if (centerMapObject) {
+	// 		map.flyTo(centerMapObject, 17);
+	// 	}
+	// }, [centerMapObject]);
+	useEffect(() => {
+		if (centerMapObject) {
+			if (isInitialized) {
+				map.flyTo(centerMapObject, 17);
+			} else {
+				map.flyTo(centerMapObject); //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
+				setIsInitialized(true);
+			}
+		}
+	}, [centerMapObject]);
+
+	return null;
+};
+
 const CustomMap = () => {
 	const dispatch = useDispatch();
 	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
 	const { windowSize } = useCheckWidth();
 	const [isMobile, setIsMobile] = useState(false);
+	const [isInitialized, setIsInitialized] = useState(false); //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
 	// const [isZoom, setIsZoom] = useState(false); HELP: ДЛЯ ОТРИСОВКИ МАРКЕРОВ ТОЛЬКО НА ВИДИМОЙ ЧАСТИ КАРТЫ
 	// const [displayedObjects, setDisplayedObjects] = useState([]);HELP: ДЛЯ ПОСТЕПЕННОГО ОТОБРАЖЕНИЯ ОБЪЕКТОВ
 
@@ -98,7 +126,7 @@ const CustomMap = () => {
 
 	return (
 		<MapContainer
-			center={[55.7522, 37.6156]}
+			center={dataObjectsInMap.centerMapObject}
 			zoom={13}
 			minZoom={10}
 			maxZoom={17}
@@ -111,6 +139,11 @@ const CustomMap = () => {
 		>
 			<TileLayer url='https://www.moscowmap.ru/leaflet/tiles/{z}/{x}/{y}.png' />
 			<ZoomTracker setZoomLevel={setZoomLevel} />
+			<FlyToLocation
+				centerMapObject={dataObjectsInMap.centerMapObject}
+				isInitialized={isInitialized} //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
+				setIsInitialized={setIsInitialized}
+			/>
 			<MarkerClusterGroup chunkedLoading>
 				{/* {(isZoom HELP: ДЛЯ ОТРИСОВКИ МАРКЕРОВ ТОЛЬКО НА ВИДИМОЙ ЧАСТИ КАРТЫ
 					? dataObjectsInMap?.visiblePoints

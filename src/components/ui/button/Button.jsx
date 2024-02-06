@@ -4,10 +4,10 @@ import { useCheckWidth } from '../../../hooks/useCheckWidth';
 import { actions as viewSettingsAction } from '../../../store/view-settings/ViewSettings.slice';
 import styles from './Button.module.scss';
 
-const Button = ({ icon }) => {
+const Button = ({ icon, newCenter, elem }) => {
 	const [clickButton, setClickButton] = useState(false);
 	const dispatch = useDispatch();
-	const { windowSize, setWindowSize } = useCheckWidth();
+	const { windowSize } = useCheckWidth();
 
 	return (
 		<button
@@ -28,6 +28,7 @@ const Button = ({ icon }) => {
 				}
 
 				if (windowSize.width >= 767.98) setClickButton(!clickButton);
+				if (icon.id === 0) newCenter(elem.crd);
 			}}
 			style={
 				icon.id === 0

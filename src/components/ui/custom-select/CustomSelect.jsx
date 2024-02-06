@@ -32,12 +32,20 @@ const CustomSelect = ({
 			});
 
 			setSearchParams(prevPar => {
-				prevPar.set(dataSelect.name, arrValue.join(',')); //HELP: ЗАПИСЬ ЗНАЧЕНИЙ В СТРОКУ
+				if (arrValue.length > 0) {
+					prevPar.set(dataSelect.name, arrValue.join(','));
+				} else {
+					prevPar.delete(dataSelect.name);
+				} //HELP: ЗАПИСЬ ЗНАЧЕНИЙ В СТРОКУ
 			});
 			navigate('?' + searchParams.toString());
 		} else {
 			setSearchParams(prevPar => {
-				prevPar.set(dataSelect.name, selectedOption.value);
+				if (selectedOption && selectedOption.value) {
+					prevPar.set(dataSelect.name, selectedOption.value);
+				} else {
+					prevPar.delete(dataSelect.name);
+				}
 			});
 			navigate('?' + searchParams.toString());
 		}

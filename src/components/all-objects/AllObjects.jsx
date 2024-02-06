@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useSearchObjectInMap } from '../../hooks/useSearchObjectInMap';
 import Button from '../ui/button/Button';
 import Loading from '../ui/loading/Loading';
 import styles from './AllObjects.module.scss';
@@ -9,6 +10,7 @@ const AllObjects = ({ isDisplay }) => {
 	const viewSettings = useSelector(state => state.viewSettings);
 	const [numDisplayed, setNumDisplayed] = useState(40);
 	const loader = useRef();
+	const { newCenter } = useSearchObjectInMap();
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
@@ -87,7 +89,7 @@ const AllObjects = ({ isDisplay }) => {
 						return (
 							<div key={elem.id} className={styles.object}>
 								<p>{elem.name}</p>
-								<Button icon={mapIcon} />
+								<Button icon={mapIcon} newCenter={newCenter} elem={elem} />
 							</div>
 						);
 					})

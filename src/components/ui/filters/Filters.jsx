@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { $axios } from '../../../api';
+import { actions as dataObjectsInMapAction } from '../../../store/data-objects-in-map/DataObjectsInMap.slice';
 import BlockInput from '../block-input/BlockInput';
 import CustomSelect from '../custom-select/CustomSelect';
 import styles from './Filters.module.scss';
 
 const Filters = ({ isDisplay }) => {
+	const dispatch = useDispatch();
 	const dataFilters = useSelector(state => state.dataFilters);
 	const adresFilterString = useSelector(state => state.adresFilterString);
 	const userMap = useSelector(state => state.userMap);
@@ -16,7 +18,7 @@ const Filters = ({ isDisplay }) => {
 			const responce = await $axios.get(
 				`/api/get_objects.php?map=${userMap.map}${adresFilterString.srcRequest}`
 			);
-			console.log(responce.data);
+			dispatch(dataObjectsInMapAction.addDataObjectsInMap(responce.data));
 		} catch (error) {
 			console.log(error);
 		}

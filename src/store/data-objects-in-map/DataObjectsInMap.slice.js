@@ -5,6 +5,7 @@ const initialState = {
 		points: [],
 	},
 	visiblePoints: [],
+	centerMapObject: [55.7522, 37.6156],
 };
 
 export const dataObjectsInMap = createSlice({
@@ -19,6 +20,9 @@ export const dataObjectsInMap = createSlice({
 		},
 		updateVisibleMarkers: (state, { payload }) => {
 			state.visiblePoints = payload;
+		},
+		addNewCenter: (state, { payload }) => {
+			state.centerMapObject = payload;
 		},
 	},
 });
