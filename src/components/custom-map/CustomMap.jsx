@@ -72,11 +72,6 @@ const FlyToLocation = ({
 }) => {
 	const map = useMap();
 
-	// useEffect(() => {
-	// 	if (centerMapObject) {
-	// 		map.flyTo(centerMapObject, 17);
-	// 	}
-	// }, [centerMapObject]);
 	useEffect(() => {
 		if (centerMapObject) {
 			if (isInitialized) {
@@ -123,6 +118,8 @@ const CustomMap = () => {
 
 	// 	return () => clearInterval(intervalId); // Очистка при размонтировании
 	// }, [dataObjectsInMap, index]);
+
+	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
 
 	return (
 		<MapContainer
@@ -192,14 +189,13 @@ const CustomMap = () => {
 						} else {
 							// Иначе отображаем маркер
 							customMarkerIcon = divIcon({
-								className: 'my-custom-icon',
-								iconSize: [10, 10],
+								className:
+									dataObjectInfo.id === object.id
+										? 'my-custom-icon_target'
+										: 'my-custom-icon',
+								iconSize: [23, 23],
 								html: renderToStaticMarkup(
-									<IconMarker
-										key={object.id}
-										srcIcon={object.icon}
-										colorIcon={object.color}
-									/>
+									<IconMarker key={object.id} object={object} />
 								),
 							});
 						}

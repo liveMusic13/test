@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { $axios } from '../../../api';
 import { useCheckWidth } from '../../../hooks/useCheckWidth';
+import { actions as dataObjectInfoAction } from '../../../store/data-object-info/DataObjectInfo.slice';
 import { actions as viewSettingsAction } from '../../../store/view-settings/ViewSettings.slice';
 import styles from './Button.module.scss';
 
@@ -8,6 +10,24 @@ const Button = ({ icon, newCenter, elem }) => {
 	const [clickButton, setClickButton] = useState(false);
 	const dispatch = useDispatch();
 	const { windowSize } = useCheckWidth();
+
+	const getObjectInfo = async id => {
+		if (window.innerWidth <= 767.98)
+			dispatch(viewSettingsAction.defaultObjects(''));
+		dispatch(viewSettingsAction.toggleObjectInfo());
+		try {
+			dispatch(viewSettingsAction.activeLoadingObject());
+
+			const responce = await $axios.get(`/api/object_info.php?id=${id}`);
+			console.log(responce);
+
+			dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
+		} catch (error) {
+			console.log(error);
+		} finally {
+			dispatch(viewSettingsAction.defaultLoadingObject());
+		}
+	}; //TODO: ПЕРЕДЕЛАТЬ ПОД НАЖАТИЕ ЗДЕСЬ. УБРАТЬ ЛИШНИЙ КОД
 
 	return (
 		<button
@@ -29,12 +49,9 @@ const Button = ({ icon, newCenter, elem }) => {
 
 				if (windowSize.width >= 767.98) setClickButton(!clickButton);
 				if (icon.id === 0) newCenter(elem.crd);
+
+				if (elem && elem.id) getObjectInfo(elem.id); //HELP: ЧТОБЫ НЕ БЫЛО ОШИБКИ В КОНСОЛИ МОЛ НЕТУ ОБЪЕКТА
 			}}
-			style={
-				icon.id === 0
-					? { backgroundColor: 'transparent', cursor: 'default' }
-					: {}
-			}
 		>
 			<svg className={icon.id === 0 ? styles.icon_svg_home : styles.icon_svg}>
 				<use

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchObjectInMap } from '../../hooks/useSearchObjectInMap';
 import Button from '../ui/button/Button';
@@ -7,10 +7,33 @@ import styles from './AllObjects.module.scss';
 
 const AllObjects = ({ isDisplay }) => {
 	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
+	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
 	const viewSettings = useSelector(state => state.viewSettings);
 	const [numDisplayed, setNumDisplayed] = useState(40);
 	const loader = useRef();
 	const { newCenter } = useSearchObjectInMap();
+
+	const objects = dataObjectsInMap?.points?.points;
+	const targetObject = useMemo(
+		() => objects.find(elem => elem.id === dataObjectInfo.id),
+		[objects, dataObjectInfo.id]
+	);
+	const otherObjects = useMemo(
+		() => objects.filter(elem => elem.id !== dataObjectInfo.id),
+		[objects, dataObjectInfo.id]
+	);
+	const [displayedObjects, setDisplayedObjects] = useState([]);
+
+	useEffect(() => {
+		if (targetObject) {
+			setDisplayedObjects([
+				targetObject,
+				...otherObjects.slice(0, numDisplayed - 1),
+			]);
+		} else {
+			setDisplayedObjects(otherObjects.slice(0, numDisplayed));
+		}
+	}, [targetObject, otherObjects, numDisplayed, dataObjectsInMap]);
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
@@ -85,9 +108,17 @@ const AllObjects = ({ isDisplay }) => {
 						</div>
 					</>
 				) : (
-					dataObjectsInMap?.points?.points?.slice(0, numDisplayed).map(elem => {
+					displayedObjects.map(elem => {
 						return (
-							<div key={elem.id} className={styles.object}>
+							<div
+								key={elem.id}
+								className={styles.object}
+								style={
+									dataObjectInfo.id === elem.id
+										? { backgroundColor: '#e0e0e0' }
+										: {}
+								}
+							>
 								<p>{elem.name}</p>
 								<Button icon={mapIcon} newCenter={newCenter} elem={elem} />
 							</div>

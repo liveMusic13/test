@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { $axios } from '../../../api';
 import { actions as dataObjectsInMapAction } from '../../../store/data-objects-in-map/DataObjectsInMap.slice';
+import { actions as viewSettingsAction } from '../../../store/view-settings/ViewSettings.slice';
 import BlockInput from '../block-input/BlockInput';
 import CustomSelect from '../custom-select/CustomSelect';
 import styles from './Filters.module.scss';
@@ -19,6 +20,10 @@ const Filters = ({ isDisplay }) => {
 				`/api/get_objects.php?map=${userMap.map}${adresFilterString.srcRequest}`
 			);
 			dispatch(dataObjectsInMapAction.addDataObjectsInMap(responce.data));
+			if (window.innerWidth <= 767.98) {
+				dispatch(viewSettingsAction.toggleSettingsMap(''));
+				dispatch(viewSettingsAction.defaultFilters(''));
+			}
 		} catch (error) {
 			console.log(error);
 		}
