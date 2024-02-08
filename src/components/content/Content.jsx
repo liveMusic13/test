@@ -10,6 +10,7 @@ import styles from './Content.module.scss';
 
 const Content = () => {
 	const viewSettings = useSelector(state => state.viewSettings);
+	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
 	const { windowSize } = useCheckWidth();
 	const [isDisplay, setIsDisplay] = useState(true);
 	const dispatch = useDispatch();
@@ -24,13 +25,19 @@ const Content = () => {
 		}
 	}, [windowSize]);
 
+	console.log('render Content');
+
 	return (
 		<div className={styles.wrapper}>
 			{viewSettings.isViewFilters && <Filters isDisplay={isDisplay} />}
 			{viewSettings.isObjectInfo && <ObjectInfo isDisplay={isDisplay} />}
-			{viewSettings.isViewObjects && <AllObjects isDisplay={isDisplay} />}
+			{viewSettings.isViewObjects &&
+				dataObjectsInMap.points['all-points'] <= 6000 && ( //TODO: ПОМЕНЯТЬ НА 5000 ПЕРЕД РЕЛИЗОМ
+					<AllObjects isDisplay={isDisplay} />
+				)}
 			<div className={styles.block__map}>
 				<CustomMap />
+				{/* <TestMap /> */}
 				<div className={styles.logo__image}>
 					<a href='https://mosmap.ru'></a>
 				</div>

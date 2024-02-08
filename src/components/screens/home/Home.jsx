@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { $axios } from '../../../api';
@@ -41,7 +41,7 @@ const Home = () => {
 	// 	getObject();
 	// }, []);
 
-	const getObject = async () => {
+	const getObject = useCallback(async () => {
 		try {
 			dispatch(ViewSettingsActions.activeLoading());
 
@@ -53,9 +53,9 @@ const Home = () => {
 		} finally {
 			dispatch(ViewSettingsActions.defaultLoading());
 		}
-	};
+	}, [map, dispatch, ViewSettingsActions, dataObjectsInMapAction]);
 
-	const getFilters = async () => {
+	const getFilters = useCallback(async () => {
 		try {
 			const responce = await axios.get(
 				`https://mosmap.ru/api/filters.php?map=${map}`
@@ -65,7 +65,7 @@ const Home = () => {
 		} catch (error) {
 			console.log(error);
 		}
-	};
+	}, [map, dispatch, dataFiltersAction]);
 
 	useEffect(() => {
 		navigate(`?map=247`);
@@ -84,44 +84,11 @@ const Home = () => {
 		}
 	}, [windowSize.width]);
 
-	// const getObjectInfo = async () => {
-	// 	dispatch(ViewSettingsActions.toggleObjectInfo());
-
-	// 	try {
-	// 		dispatch(ViewSettingsActions.activeLoading());
-
-	// 		const responce = await $axios.get(
-	// 			// `/api/object_info.php?id=${object.id}`
-	// 			`/api/object_info.php?id=97823`
-	// 		);
-	// 		console.log(responce);
-
-	// 		dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
-	// 		dispatch(ViewSettingsActions.defaultFilters());
-	// 		if (isMobile) dispatch(ViewSettingsActions.activeSettingsMap(''));
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	} finally {
-	// 		dispatch(ViewSettingsActions.defaultLoading());
-	// 	}
-	// };
-
-	// const getObjectInfo = async () => {
-	// 	try {
-	// 		const responce = await $axios.get(
-	// 			'https://mosmap.ru/api/filters.php?map=2'
-	// 		);
-
-	// 		console.log(responce);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
+	console.log('render Home');
 
 	return (
 		<div style={{ height: '100%' }}>
 			<Header />
-			{/* <button onClick={getObjectInfo}>test</button> */}
 			<Content />
 			{/* {viewSettings.isViewBurger && <BurgerMenu />} */}
 			{viewSettings.isSettingsMap && <SettingsMap />}
@@ -129,4 +96,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default React.memo(Home);

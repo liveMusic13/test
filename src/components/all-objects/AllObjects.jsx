@@ -108,7 +108,23 @@ const AllObjects = ({ isDisplay }) => {
 						</div>
 					</>
 				) : (
-					displayedObjects.map(elem => {
+					// displayedObjects.map(elem => {
+					// 	return (
+					// 		<div
+					// 			key={elem.id}
+					// 			className={styles.object}
+					// 			style={
+					// 				dataObjectInfo.id === elem.id
+					// 					? { backgroundColor: '#e0e0e0' }
+					// 					: {}
+					// 			}
+					// 		>
+					// 			<p>{elem.name}</p>
+					// 			<Button icon={mapIcon} newCenter={newCenter} elem={elem} />
+					// 		</div>
+					// 	);
+					// })
+					objects.map(elem => {
 						return (
 							<div
 								key={elem.id}

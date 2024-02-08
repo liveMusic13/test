@@ -36,7 +36,7 @@ const Filters = ({ isDisplay }) => {
 		>
 			<h2 className={styles.title}>Фильтры</h2>
 			<div className={styles.wrapper_block__filters}>
-				{dataFilters.map(field => {
+				{dataFilters?.map(field => {
 					if (field.type === 'number') {
 						return (
 							<BlockInput

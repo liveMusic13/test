@@ -1,19 +1,18 @@
 import 'leaflet/dist/leaflet.css';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import MarkerClusterGroup from 'react-leaflet-cluster';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCheckWidth } from '../../hooks/useCheckWidth.js';
 import CanvasMarkersLayer from './CanvasMarkersLayer.jsx';
 import FlyToLocation from './FlyToLocation.jsx';
 import ZoomTracker from './ZoomTracker.jsx';
-import RenderMarkers from './renderMarkers.jsx';
 
-const CustomMap = () => {
+const TestMap = () => {
+	const dispatch = useDispatch();
 	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
 	const { windowSize } = useCheckWidth();
 	const [isMobile, setIsMobile] = useState(false);
-	const [isInitialized, setIsInitialized] = useState(false); //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
+	const [isInitialized, setIsInitialized] = useState(false);
 
 	useEffect(() => {
 		if (windowSize.width <= 767.98) {
@@ -23,8 +22,9 @@ const CustomMap = () => {
 
 	const [zoomLevel, setZoomLevel] = useState(13);
 
-	console.log('render CustomMap');
+	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
 
+	console.log('dsds');
 	return (
 		<MapContainer
 			center={dataObjectsInMap.centerMapObject}
@@ -42,25 +42,15 @@ const CustomMap = () => {
 			<ZoomTracker setZoomLevel={setZoomLevel} />
 			<FlyToLocation
 				centerMapObject={dataObjectsInMap.centerMapObject}
-				isInitialized={isInitialized} //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
+				isInitialized={isInitialized}
 				setIsInitialized={setIsInitialized}
 			/>
-			{dataObjectsInMap.points.canvas_map === 0 ? (
-				dataObjectsInMap.points.clastering === 0 ? (
-					<RenderMarkers isMobile={isMobile} zoomLevel={zoomLevel} />
-				) : (
-					<MarkerClusterGroup chunkedLoading={true}>
-						<RenderMarkers isMobile={isMobile} zoomLevel={zoomLevel} />
-					</MarkerClusterGroup>
-				)
-			) : (
-				<CanvasMarkersLayer
-					markersData={dataObjectsInMap.points.points}
-					zoomLevel={zoomLevel}
-				/>
-			)}
+			<CanvasMarkersLayer
+				markersData={dataObjectsInMap.points.points}
+				zoomLevel={zoomLevel}
+			/>
 		</MapContainer>
 	);
 };
 
-export default CustomMap;
+export default TestMap;
