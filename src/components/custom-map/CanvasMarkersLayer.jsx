@@ -14,36 +14,44 @@ const CanvasMarkersLayer = ({ markersData, isMobile, zoomLevel }) => {
 	const markersRef = useRef([]);
 	const polygonsRef = useRef([]);
 
-	const getInfoObject = marker => async () => {
-		if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
-		dispatch(viewSettingsAction.toggleObjectInfo());
+	const getInfoObject =
+		(marker, mapObject, markersRef, polygonsRef) => async () => {
+			if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
+			dispatch(viewSettingsAction.toggleObjectInfo());
 
-		try {
-			dispatch(viewSettingsAction.activeLoadingObject());
+			try {
+				dispatch(viewSettingsAction.activeLoadingObject());
 
-			const response = await $axios.get(`/api/object_info.php?id=${marker.id}`);
-			console.log(response);
+				const response = await $axios.get(
+					`/api/object_info.php?id=${marker.id}`
+				);
+				console.log(response);
 
-			dispatch(dataObjectInfoAction.addObjectInfo(response.data));
-			dispatch(viewSettingsAction.defaultFilters());
-		} catch (error) {
-			console.log(error);
-		} finally {
-			dispatch(viewSettingsAction.defaultLoadingObject());
+				dispatch(dataObjectInfoAction.addObjectInfo(response.data));
+				dispatch(viewSettingsAction.defaultFilters());
+			} catch (error) {
+				console.log(error);
+			} finally {
+				dispatch(viewSettingsAction.defaultLoadingObject());
 
-			// if (marker.id === dataObjectInfo.id) {
-			// 	// Если id маркера совпадает с выбранным id, применяем специальный стиль
-			// 	mapObject.setStyle({
-			// 		color: 'red', // Измените цвет на желаемый
-			// 		shadowBlur: 100, // Добавьте тень
-			// 	});
-			// 	mapObject.redraw();
-			// }
-		}
-	};
+				// if (marker.id === dataObjectInfo.id) {
+				// 	// Если id маркера совпадает с выбранным id, применяем специальный стиль
+				// 	mapObject.setStyle({
+				// 		color: 'red', // Измените цвет на желаемый
+				// 		shadowBlur: 100, // Добавьте тень
+				// 	});
+				// 	mapObject.redraw();
+				// }
+			}
+		};
 
 	useEffect(() => {
 		const canvasLayer = L.canvas({ padding: 0.5 }).addTo(map);
+
+		markersRef.current.forEach(marker => map.removeLayer(marker));
+		markersRef.current = [];
+		polygonsRef.current.forEach(polygon => map.removeLayer(polygon));
+		polygonsRef.current = [];
 
 		map.whenReady(() => {
 			if (zoomLevel >= 16) {
@@ -88,7 +96,7 @@ const CanvasMarkersLayer = ({ markersData, isMobile, zoomLevel }) => {
 			}
 		});
 
-		console.log('render marker');
+		console.log('render marker', markersData);
 	}, [map, markersData, zoomLevel]);
 
 	return null;
