@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 import { useCheckWidth } from '../../hooks/useCheckWidth.js';
 import CanvasMarkersLayer from './CanvasMarkersLayer.jsx';
 import FlyToLocation from './FlyToLocation.jsx';
+import RenderMarkers from './RenderMarkers.jsx';
 import ZoomTracker from './ZoomTracker.jsx';
-import RenderMarkers from './renderMarkers.jsx';
 
 const CustomMap = () => {
 	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
