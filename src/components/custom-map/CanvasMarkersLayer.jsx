@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMap } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import { $axios } from '../../api';
@@ -13,37 +13,27 @@ const CanvasMarkersLayer = ({ markersData, isMobile, zoomLevel }) => {
 	const dispatch = useDispatch();
 	const markersRef = useRef([]);
 	const polygonsRef = useRef([]);
+	const [redrawMarker, setRedrawMarker] = useState(0);
 
-	const getInfoObject =
-		(marker, mapObject, markersRef, polygonsRef) => async () => {
-			if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
-			dispatch(viewSettingsAction.toggleObjectInfo());
+	const getInfoObject = (marker, mapObject) => async () => {
+		if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
+		dispatch(viewSettingsAction.toggleObjectInfo());
 
-			try {
-				dispatch(viewSettingsAction.activeLoadingObject());
+		try {
+			dispatch(viewSettingsAction.activeLoadingObject());
 
-				const response = await $axios.get(
-					`/api/object_info.php?id=${marker.id}`
-				);
-				console.log(response);
+			const response = await $axios.get(`/api/object_info.php?id=${marker.id}`);
+			console.log(response);
 
-				dispatch(dataObjectInfoAction.addObjectInfo(response.data));
-				dispatch(viewSettingsAction.defaultFilters());
-			} catch (error) {
-				console.log(error);
-			} finally {
-				dispatch(viewSettingsAction.defaultLoadingObject());
-
-				// if (marker.id === dataObjectInfo.id) {
-				// 	// Если id маркера совпадает с выбранным id, применяем специальный стиль
-				// 	mapObject.setStyle({
-				// 		color: 'red', // Измените цвет на желаемый
-				// 		shadowBlur: 100, // Добавьте тень
-				// 	});
-				// 	mapObject.redraw();
-				// }
-			}
-		};
+			dispatch(dataObjectInfoAction.addObjectInfo(response.data));
+			dispatch(viewSettingsAction.defaultFilters());
+		} catch (error) {
+			console.log(error);
+		} finally {
+			dispatch(viewSettingsAction.defaultLoadingObject());
+			setRedrawMarker(prev => prev + 1);
+		}
+	};
 
 	useEffect(() => {
 		const canvasLayer = L.canvas({ padding: 0.5 }).addTo(map);
@@ -83,21 +73,20 @@ const CanvasMarkersLayer = ({ markersData, isMobile, zoomLevel }) => {
 						// Если id маркера совпадает с выбранным id, применяем специальный стиль
 						mapObject.setStyle({
 							color: 'red', // Измените цвет на желаемый
-							shadowBlur: 100, // Добавьте тень
+							shadowBlur: 1000, // Добавьте тень
 						});
 						mapObject.redraw();
 					}
 
 					markersRef.current.push(mapObject);
 				}
-				// mapObject.on('click', getInfoObject(marker, mapObject));
-				mapObject.on('click', getInfoObject(marker));
+				mapObject.on('click', getInfoObject(marker, mapObject));
 				mapObject.bindPopup(marker.name);
 			}
 		});
 
-		console.log('render marker', markersData);
-	}, [map, markersData, zoomLevel]);
+		console.log('render marker');
+	}, [map, markersData, zoomLevel, redrawMarker]);
 
 	return null;
 };
