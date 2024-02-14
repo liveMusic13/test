@@ -15,7 +15,7 @@ const CanvasMarkersLayer = ({ markersData, isMobile, zoomLevel }) => {
 	const polygonsRef = useRef([]);
 	const [redrawMarker, setRedrawMarker] = useState(0);
 
-	const getInfoObject = (marker, mapObject) => async () => {
+	const getInfoObject = marker => async () => {
 		if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
 		dispatch(viewSettingsAction.toggleObjectInfo());
 
@@ -63,19 +63,73 @@ const CanvasMarkersLayer = ({ markersData, isMobile, zoomLevel }) => {
 
 					polygonsRef.current.push(mapObject);
 				} else {
-					mapObject = new L.CircleMarker(marker.crd, {
-						renderer: canvasLayer,
-						radius: 5,
-						color: ARGBtoHEX(marker.color),
-					}).addTo(map);
+					// mapObject = new L.CircleMarker(marker.crd, {
+					// 	renderer: canvasLayer,
+					// 	radius: 5,
+					// 	color: ARGBtoHEX(marker.color),
+					// }).addTo(map);
+					mapObject = new L.Polygon(
+						[
+							[marker.crd[0], marker.crd[1] - 0.001], // Верхняя левая точка
+							[marker.crd[0] + 0.0003, marker.crd[1] + 0.0002], // Верхняя правая точка
+							[marker.crd[0], marker.crd[1] + 0.0012], // Нижняя правая точка
+							[marker.crd[0] - 0.001, marker.crd[1] + 0.0012],
+							[marker.crd[0] - 0.001, marker.crd[1] - 0.001],
+						],
+						{ color: 'black', renderer: canvasLayer }
+					).addTo(map);
+
+					mapObject = new L.Polygon(
+						[
+							[marker.crd[0], marker.crd[1] - 0.0009], // Верхняя левая точка
+							[marker.crd[0] + 0.0002, marker.crd[1] + 0.0001], // Верхняя правая точка
+							[marker.crd[0], marker.crd[1] + 0.0011], // Нижняя правая точка
+							[marker.crd[0] - 0.0009, marker.crd[1] + 0.0011],
+							[marker.crd[0] - 0.0009, marker.crd[1] - 0.0008],
+						],
+						{ color: ARGBtoHEX(marker.color), renderer: canvasLayer }
+					).addTo(map);
 
 					if (marker.id === dataObjectInfo.id) {
 						// Если id маркера совпадает с выбранным id, применяем специальный стиль
-						mapObject.setStyle({
-							color: 'red', // Измените цвет на желаемый
-							shadowBlur: 1000, // Добавьте тень
-						});
-						mapObject.redraw();
+						// mapObject.setStyle({
+						// 	color: 'red', // Измените цвет на желаемый
+						// 	shadowBlur: 1000, // Добавьте тень
+						// });
+						// mapObject.redraw();
+						console.log(marker);
+
+						// L.polyline(
+						// 	[
+						// 		[marker.crd[0], marker.crd[1] - 0.001],
+						// 		[marker.crd[0] + 0.0005, marker.crd[1] + 0.0005],
+						// 		[marker.crd[0] - 0.00009, marker.crd[1]],
+						// 		// [marker.crd[0] , marker.crd[1] + 0.0015],
+						// 		// [marker.crd[0] - 0.001, marker.crd[1] + 0.001],
+						// 	],
+						// 	{ color: ARGBtoHEX(marker.color) }
+						// ).addTo(map);
+						L.polygon(
+							[
+								[marker.crd[0], marker.crd[1] - 0.001], // Верхняя левая точка
+								[marker.crd[0] + 0.0003, marker.crd[1] + 0.0002], // Верхняя правая точка
+								[marker.crd[0], marker.crd[1] + 0.0012], // Нижняя правая точка
+								[marker.crd[0] - 0.001, marker.crd[1] + 0.0012],
+								[marker.crd[0] - 0.001, marker.crd[1] - 0.001],
+							],
+							{ color: 'black' }
+						).addTo(map);
+
+						L.polygon(
+							[
+								[marker.crd[0], marker.crd[1] - 0.0009], // Верхняя левая точка
+								[marker.crd[0] + 0.0002, marker.crd[1] + 0.0001], // Верхняя правая точка
+								[marker.crd[0], marker.crd[1] + 0.0011], // Нижняя правая точка
+								[marker.crd[0] - 0.0009, marker.crd[1] + 0.0011],
+								[marker.crd[0] - 0.0009, marker.crd[1] - 0.0008],
+							],
+							{ color: ARGBtoHEX(marker.color) }
+						).addTo(map);
 					}
 
 					markersRef.current.push(mapObject);

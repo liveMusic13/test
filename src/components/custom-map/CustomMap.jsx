@@ -4,8 +4,8 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { useSelector } from 'react-redux';
 import { useCheckWidth } from '../../hooks/useCheckWidth.js';
-import CanvasMarkersLayer from './CanvasMarkersLayer.jsx';
 import FlyToLocation from './FlyToLocation.jsx';
+import LastTestCanvasMarker from './LastTestCanvasMarker.jsx';
 import RenderMarkers from './RenderMarkers.jsx';
 import ZoomTracker from './ZoomTracker.jsx';
 
@@ -54,10 +54,13 @@ const CustomMap = () => {
 					</MarkerClusterGroup>
 				)
 			) : (
-				<CanvasMarkersLayer
-					markersData={dataObjectsInMap.points.points}
-					zoomLevel={zoomLevel}
-				/>
+				// <CanvasMarkersLayer
+				// 	markersData={dataObjectsInMap.points.points}
+				// 	zoomLevel={zoomLevel}
+				// />
+				//HELP: БИБЛИОТЕКА, ТЕСТ
+				// <TestLibraryMarker isMobile={isMobile} zoomLevel={zoomLevel} />
+				<LastTestCanvasMarker isMobile={isMobile} zoomLevel={zoomLevel} />
 			)}
 		</MapContainer>
 	);
