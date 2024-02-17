@@ -38,6 +38,50 @@ const CanvasMarkersLayer = ({ markersData, isMobile, zoomLevel }) => {
 	useEffect(() => {
 		const canvasLayer = L.canvas({ padding: 0.5 }).addTo(map);
 
+		L.Canvas.include({
+			_updateImg(layer) {
+				//Метод добавления img на Canvas-слой
+				const { img } = layer.options;
+				const p = layer._point.round();
+				this._ctx.drawImage(
+					img.el,
+					p.x - img.size[0] / 2,
+					p.y - img.size[1] / 2,
+					img.size[0],
+					img.size[1]
+				);
+			},
+		});
+
+		const CanvasMarker = L.CircleMarker.extend({
+			_updatePath() {
+				if (!this.options.img.el) {
+					if (this.options.imageCache[this.options.img.url]) {
+						this.options.img.el = this.options.imageCache[this.options.img.url];
+						this.redraw();
+						return;
+					}
+
+					//Создаем элемент IMG
+					const img = document.createElement('img');
+					img.src = this.options.img.url;
+					this.options.img.el = img;
+					img.onload = () => {
+						this.options.imageCache[this.options.img.url] = img;
+						this.redraw(); //После загрузки запускаем перерисовку
+					};
+				} else {
+					this._renderer._updateImg(this); //Вызываем _updateImg
+				}
+			},
+		});
+
+		const customMarker = (L.canvasMarker = function (...options) {
+			return new CanvasMarker(...options);
+		});
+
+		console.log(customMarker());
+
 		markersRef.current.forEach(marker => map.removeLayer(marker));
 		markersRef.current = [];
 		polygonsRef.current.forEach(polygon => map.removeLayer(polygon));
@@ -68,71 +112,13 @@ const CanvasMarkersLayer = ({ markersData, isMobile, zoomLevel }) => {
 					// 	radius: 5,
 					// 	color: ARGBtoHEX(marker.color),
 					// }).addTo(map);
-					mapObject = new L.Polygon(
-						[
-							[marker.crd[0], marker.crd[1] - 0.001], // Верхняя левая точка
-							[marker.crd[0] + 0.0003, marker.crd[1] + 0.0002], // Верхняя правая точка
-							[marker.crd[0], marker.crd[1] + 0.0012], // Нижняя правая точка
-							[marker.crd[0] - 0.001, marker.crd[1] + 0.0012],
-							[marker.crd[0] - 0.001, marker.crd[1] - 0.001],
-						],
-						{ color: 'black', renderer: canvasLayer }
-					).addTo(map);
 
-					mapObject = new L.Polygon(
-						[
-							[marker.crd[0], marker.crd[1] - 0.0009], // Верхняя левая точка
-							[marker.crd[0] + 0.0002, marker.crd[1] + 0.0001], // Верхняя правая точка
-							[marker.crd[0], marker.crd[1] + 0.0011], // Нижняя правая точка
-							[marker.crd[0] - 0.0009, marker.crd[1] + 0.0011],
-							[marker.crd[0] - 0.0009, marker.crd[1] - 0.0008],
-						],
-						{ color: ARGBtoHEX(marker.color), renderer: canvasLayer }
-					).addTo(map);
-
-					if (marker.id === dataObjectInfo.id) {
-						// Если id маркера совпадает с выбранным id, применяем специальный стиль
-						// mapObject.setStyle({
-						// 	color: 'red', // Измените цвет на желаемый
-						// 	shadowBlur: 1000, // Добавьте тень
-						// });
-						// mapObject.redraw();
-						console.log(marker);
-
-						// L.polyline(
-						// 	[
-						// 		[marker.crd[0], marker.crd[1] - 0.001],
-						// 		[marker.crd[0] + 0.0005, marker.crd[1] + 0.0005],
-						// 		[marker.crd[0] - 0.00009, marker.crd[1]],
-						// 		// [marker.crd[0] , marker.crd[1] + 0.0015],
-						// 		// [marker.crd[0] - 0.001, marker.crd[1] + 0.001],
-						// 	],
-						// 	{ color: ARGBtoHEX(marker.color) }
-						// ).addTo(map);
-						L.polygon(
-							[
-								[marker.crd[0], marker.crd[1] - 0.001], // Верхняя левая точка
-								[marker.crd[0] + 0.0003, marker.crd[1] + 0.0002], // Верхняя правая точка
-								[marker.crd[0], marker.crd[1] + 0.0012], // Нижняя правая точка
-								[marker.crd[0] - 0.001, marker.crd[1] + 0.0012],
-								[marker.crd[0] - 0.001, marker.crd[1] - 0.001],
-							],
-							{ color: 'black' }
-						).addTo(map);
-
-						L.polygon(
-							[
-								[marker.crd[0], marker.crd[1] - 0.0009], // Верхняя левая точка
-								[marker.crd[0] + 0.0002, marker.crd[1] + 0.0001], // Верхняя правая точка
-								[marker.crd[0], marker.crd[1] + 0.0011], // Нижняя правая точка
-								[marker.crd[0] - 0.0009, marker.crd[1] + 0.0011],
-								[marker.crd[0] - 0.0009, marker.crd[1] - 0.0008],
-							],
-							{ color: ARGBtoHEX(marker.color) }
-						).addTo(map);
-					}
-
-					markersRef.current.push(mapObject);
+					mapObject = new customMarker(marker.crd, {
+						img: {
+							url: '../images/icons/target.svg',
+							size: [20, 20],
+						},
+					});
 				}
 				mapObject.on('click', getInfoObject(marker, mapObject));
 				mapObject.bindPopup(marker.name);

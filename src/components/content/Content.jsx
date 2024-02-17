@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCheckWidth } from '../../hooks/useCheckWidth';
 import { actions as viewSettingsAction } from '../../store/view-settings/ViewSettings.slice';
 import AllObjects from '../all-objects/AllObjects';
-import CustomMap from '../custom-map/CustomMap';
+import TestMap from '../custom-map/TestMap';
 import ObjectInfo from '../object-info/ObjectInfo';
 import Filters from '../ui/filters/Filters';
 import styles from './Content.module.scss';
@@ -36,8 +36,8 @@ const Content = () => {
 					<AllObjects isDisplay={isDisplay} />
 				)}
 			<div className={styles.block__map}>
-				<CustomMap />
-				{/* <TestMap /> */}
+				{/* <CustomMap /> */}
+				<TestMap />
 				<div className={styles.logo__image}>
 					<a href='https://mosmap.ru'></a>
 				</div>

@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCheckWidth } from '../../hooks/useCheckWidth.js';
-import CanvasMarkersLayer from './CanvasMarkersLayer.jsx';
 import FlyToLocation from './FlyToLocation.jsx';
+import TestLibraryMarker from './TestLibraryMarker.jsx';
 import ZoomTracker from './ZoomTracker.jsx';
 
 const TestMap = () => {
@@ -45,10 +45,9 @@ const TestMap = () => {
 				isInitialized={isInitialized}
 				setIsInitialized={setIsInitialized}
 			/>
-			<CanvasMarkersLayer
-				markersData={dataObjectsInMap.points.points}
-				zoomLevel={zoomLevel}
-			/>
+			<TestLibraryMarker isMobile={isMobile} zoomLevel={zoomLevel} />
+			{/* <LastTestCanvasMarker isMobile={isMobile} zoomLevel={zoomLevel} /> */}
+			{/* <NewCanvasVersionThree isMobile={isMobile} zoomLevel={zoomLevel} /> */}
 		</MapContainer>
 	);
 };

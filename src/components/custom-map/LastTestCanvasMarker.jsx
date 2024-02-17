@@ -16,6 +16,7 @@ const LastTestCanvasMarker = ({ isMobile, zoomLevel }) => {
 	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
 	const markersRef = useRef([]); //МАРКЕРЫ В ВИДЕ ИКОНОК
 	const polygonsRef = useRef([]); //ПОЛИГОНЫ
+	const markersCanvasRef = useRef(null);
 
 	const getInfoObject = async marker => {
 		//ЗАПРОС НА ПОЛУЧЕНИЕ ИНФОРМАЦИИ ОБ ОБЪЕКТЕ В ТАРГЕТЕ
@@ -40,10 +41,16 @@ const LastTestCanvasMarker = ({ isMobile, zoomLevel }) => {
 	useEffect(() => {
 		if (!map || markersData.length === 0) return;
 
-		const markersCanvas = new L.MarkersCanvas();
-		markersCanvas.addTo(map);
+		if (markersCanvasRef.current) {
+			map.removeLayer(markersCanvasRef.current);
+		}
 
-		markersRef.current.forEach(marker => markersCanvas.removeMarker(marker)); //УДАЛЕНИЕ МАРКЕРОВ И ПОЛИГОНОВ ПРИ СОЗДАНИИ КАРТЫ, ЧТОБЫ ОБНОВЛЯЛИСЬ ЗНАЧКИ ПРИ КЛИКЕ И ПРОЧЕМ
+		markersCanvasRef.current = new L.MarkersCanvas(); // Сохраняем новый экземпляр в ref
+		markersCanvasRef.current.addTo(map);
+
+		markersRef.current.forEach(marker =>
+			markersCanvasRef.current.removeMarker(marker)
+		); //УДАЛЕНИЕ МАРКЕРОВ И ПОЛИГОНОВ ПРИ СОЗДАНИИ КАРТЫ, ЧТОБЫ ОБНОВЛЯЛИСЬ ЗНАЧКИ ПРИ КЛИКЕ И ПРОЧЕМ
 		markersRef.current = [];
 		polygonsRef.current.forEach(polygon => map.removeLayer(polygon));
 		polygonsRef.current = [];
@@ -52,7 +59,7 @@ const LastTestCanvasMarker = ({ isMobile, zoomLevel }) => {
 			if (zoomLevel >= 16) {
 				//ТАКОЕ ЖЕ ОБНУЛЕНИЕ ЧТО И ВЫШЕ,ТОЛЬКО ОТДЕЛЬНО ДЛЯ КАЖДОГО МАССИВА ЛИБО ПОЛИГОНОВ ЛИБО МАРКЕРОВ, В ЗАВИСИМОСТИ ОТ ЗУМА
 				markersRef.current.forEach(marker =>
-					markersCanvas.removeMarker(marker)
+					markersCanvasRef.current.removeMarker(marker)
 				);
 				markersRef.current = [];
 			} else {
@@ -92,7 +99,7 @@ const LastTestCanvasMarker = ({ isMobile, zoomLevel }) => {
 			}
 		});
 
-		markersCanvas.addMarkers(markersRef.current);
+		markersCanvasRef.current.addMarkers(markersRef.current);
 		console.log('render MARKERS OR POLYGON');
 	}, [zoomLevel, markersData, map]);
 
