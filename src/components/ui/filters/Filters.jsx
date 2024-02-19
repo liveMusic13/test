@@ -17,7 +17,7 @@ const Filters = ({ isDisplay }) => {
 	const getFiltersObjects = async () => {
 		try {
 			const responce = await $axios.get(
-				`/api/get_objects.php?map=${userMap.map}${adresFilterString.srcRequest}`
+				`/api/get_objects.php${adresFilterString.srcRequest}`
 			);
 			dispatch(dataObjectsInMapAction.addDataObjectsInMap(responce.data));
 			if (window.innerWidth <= 767.98) {
@@ -42,7 +42,7 @@ const Filters = ({ isDisplay }) => {
 							<BlockInput
 								key={field.id}
 								title={field.caption}
-								name={field.name}
+								id={field.id}
 								clearFilter={clearFilter}
 							/>
 						);

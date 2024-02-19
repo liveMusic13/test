@@ -58,8 +58,9 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 		L.DomUtil.addClass(newLayer._canvas, `unique-layer${Date.now()}`);
 
 		canvasLayerRef.current = newLayer;
+		newLayer._canvas.style.transformOrigin = '50% 50%';
 
-		console.log(canvasLayerRef.current);
+		console.log(newLayer);
 		// console.log('canvasLayerRef', canvasLayerRef.current._leaflet_id);
 		markersRef.current.forEach(marker => map.removeLayer(marker)); //УДАЛЕНИЕ МАРКЕРОВ И ПОЛИГОНОВ ПРИ СОЗДАНИИ КАРТЫ, ЧТОБЫ ОБНОВЛЯЛИСЬ ЗНАЧКИ ПРИ КЛИКЕ И ПРОЧЕМ
 		markersRef.current = [];
@@ -152,6 +153,7 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 			center.lat += 0.0001;
 			map.panTo(center);
 		}
+
 		map.on('load zoomend', function () {
 			//HELP: ЗДЕСЬ ИСПОЛЬЗУЕМ ПРИ ЗУМЕ И ЗАГРУЗКЕ ФУНКЦИЮ updateMarkers
 			updateMarkers();
