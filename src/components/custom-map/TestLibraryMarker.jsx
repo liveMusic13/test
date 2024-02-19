@@ -153,11 +153,15 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 			center.lat += 0.0001;
 			map.panTo(center);
 		}
-
-		map.on('load zoomend', function () {
-			//HELP: ЗДЕСЬ ИСПОЛЬЗУЕМ ПРИ ЗУМЕ И ЗАГРУЗКЕ ФУНКЦИЮ updateMarkers
-			updateMarkers();
-		});
+		updateMarkers();
+		// map.on('load', function () {
+		// 	//HELP: ЗДЕСЬ ИСПОЛЬЗУЕМ ПРИ ЗУМЕ И ЗАГРУЗКЕ ФУНКЦИЮ updateMarkers
+		// 	updateMarkers();
+		// });
+		// map.on('zoomend', function () {
+		// 	//HELP: ЗДЕСЬ ИСПОЛЬЗУЕМ ПРИ ЗУМЕ И ЗАГРУЗКЕ ФУНКЦИЮ updateMarkers
+		// 	updateMarkers();
+		// });
 	}, [map, markersData, zoomLevel]); // ОТСЛЕЖИВАЕМ И ВЫЗЫВАЕМ РЕРЕНДЕР ПРИ ИЗМЕНЕНИИ ЗУМА, ДАННЫХ ОБ ОБЪЕКТАХ И КАРТЫ
 
 	return null;
