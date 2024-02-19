@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useCheckWidth } from '../../hooks/useCheckWidth';
 import { actions as viewSettingsAction } from '../../store/view-settings/ViewSettings.slice';
 import Loading from '../ui/loading/Loading';
 import styles from './ObjectInfo.module.scss';
@@ -8,7 +7,6 @@ const ObjectInfo = ({ isDisplay }) => {
 	const viewSettings = useSelector(state => state.viewSettings);
 	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
 	const dispatch = useDispatch();
-	const { windowSize, setWindowSize } = useCheckWidth();
 
 	return (
 		<div
@@ -21,7 +19,8 @@ const ObjectInfo = ({ isDisplay }) => {
 					className={styles.button__close}
 					onClick={() => {
 						dispatch(viewSettingsAction.defaultObjectInfo(''));
-						dispatch(viewSettingsAction.toggleFilters(''));
+						if (window.innerWidth <= 767.98)
+							dispatch(viewSettingsAction.toggleFilters(''));
 					}}
 				>
 					<span></span>

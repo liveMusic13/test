@@ -31,7 +31,8 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 			console.log(response);
 
 			dispatch(dataObjectInfoAction.addObjectInfo(response.data));
-			dispatch(viewSettingsAction.defaultFilters());
+			if (window.innerWidth <= 767.98)
+				dispatch(viewSettingsAction.defaultFilters());
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -58,9 +59,8 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 		L.DomUtil.addClass(newLayer._canvas, `unique-layer${Date.now()}`);
 
 		canvasLayerRef.current = newLayer;
-		newLayer._canvas.style.transformOrigin = '50% 50%';
+		// newLayer._canvas.style.transformOrigin = '50% 50%';
 
-		console.log(newLayer);
 		// console.log('canvasLayerRef', canvasLayerRef.current._leaflet_id);
 		markersRef.current.forEach(marker => map.removeLayer(marker)); //УДАЛЕНИЕ МАРКЕРОВ И ПОЛИГОНОВ ПРИ СОЗДАНИИ КАРТЫ, ЧТОБЫ ОБНОВЛЯЛИСЬ ЗНАЧКИ ПРИ КЛИКЕ И ПРОЧЕМ
 		markersRef.current = [];
