@@ -18,6 +18,8 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 	const markersRef = useRef([]); //МАРКЕРЫ В ВИДЕ ИКОНОК
 	const polygonsRef = useRef([]); //ПОЛИГОНЫ
 	const canvasLayerRef = useRef(null);
+	let targetMarker = null;
+	let cursorPosition = null;
 
 	const getInfoObject = async id => {
 		//ЗАПРОС НА ПОЛУЧЕНИЕ ИНФОРМАЦИИ ОБ ОБЪЕКТЕ В ТАРГЕТЕ
@@ -70,6 +72,17 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 		canvasLayerRef.current.addOnClickListener(function (e, data) {
 			// ОБРАБОТЧИК КЛИКА
 			let id_marker = data[0].data.options.data_marker.id; // ЗАБИРАЕМ ID ДЛЯ ЗАПРОСА ИНФОРМАЦИИ ОБ ОБЪЕКТЕ
+			const marker = data[0].data.options.data_marker;
+
+			if (targetMarker) {
+				map.removeLayer(targetMarker);
+			}
+			if (zoomLevel <= 16) {
+				targetMarker = new L.CircleMarker(marker.crd, {
+					color: ARGBtoHEX(marker.color),
+					radius: 15,
+				}).addTo(map);
+			}
 
 			getInfoObject(id_marker); // ЗАПРОС НА СЕРВЕР
 		});
@@ -87,6 +100,13 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 			for (let marker of markersData) {
 				//ПЕРЕБИРАЕМ МАССИВ ОБЪЕКТОВ
 				let mapObject; // КОНКРЕТНЫЙ ОБЪЕКТ, КОТОРЫЙ ПОТОМ БУДЕТ ПУШИТСЯ В МАССИВ МАРКЕРОВ ИЛИ ПОЛИГОНОВ
+
+				if (zoomLevel >= 16) {
+					console.log(targetMarker);
+					// if (targetMarker._leaflet_id === marker.id)
+					// 	map.removeLayer(targetMarker._leaflet_id);
+				}
+
 				if (zoomLevel >= 16 && marker.polygon && marker.polygon.length > 0) {
 					mapObject = new L.Polygon(marker.polygon, {
 						// СОЗДАЕМ ПОЛИГОН
@@ -162,7 +182,7 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 		// 	//HELP: ЗДЕСЬ ИСПОЛЬЗУЕМ ПРИ ЗУМЕ И ЗАГРУЗКЕ ФУНКЦИЮ updateMarkers
 		// 	updateMarkers();
 		// });
-	}, [map, markersData, zoomLevel]); // ОТСЛЕЖИВАЕМ И ВЫЗЫВАЕМ РЕРЕНДЕР ПРИ ИЗМЕНЕНИИ ЗУМА, ДАННЫХ ОБ ОБЪЕКТАХ И КАРТЫ
+	}, [map, markersData, zoomLevel, targetMarker]); // ОТСЛЕЖИВАЕМ И ВЫЗЫВАЕМ РЕРЕНДЕР ПРИ ИЗМЕНЕНИИ ЗУМА, ДАННЫХ ОБ ОБЪЕКТАХ И КАРТЫ
 
 	return null;
 };
