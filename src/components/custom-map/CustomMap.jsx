@@ -4,7 +4,6 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { useSelector } from 'react-redux';
 import { useCheckWidth } from '../../hooks/useCheckWidth.js';
-import CenterZoomMouse from './CenterZoomMouse.jsx';
 import FlyToLocation from './FlyToLocation.jsx';
 import RenderMarkers from './RenderMarkers.jsx';
 import TestLibraryMarker from './TestLibraryMarker.jsx';
@@ -15,9 +14,6 @@ const CustomMap = () => {
 	const { windowSize } = useCheckWidth();
 	const [isMobile, setIsMobile] = useState(false);
 	const [isInitialized, setIsInitialized] = useState(false); //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
-	const [cursorPosition, setCursorPosition] = useState(
-		dataObjectsInMap.centerMapObject
-	);
 
 	useEffect(() => {
 		if (windowSize.width <= 767.98) {
@@ -49,7 +45,7 @@ const CustomMap = () => {
 				isInitialized={isInitialized} //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
 				setIsInitialized={setIsInitialized}
 			/>
-			<CenterZoomMouse />
+			{/* <CenterZoomMouse /> */}
 			{dataObjectsInMap.points.canvas_map === 0 ? (
 				dataObjectsInMap.points.clastering === 0 ? (
 					<RenderMarkers isMobile={isMobile} zoomLevel={zoomLevel} />
