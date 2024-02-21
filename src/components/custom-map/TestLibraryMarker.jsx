@@ -180,7 +180,8 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 		// 	updateMarkers();
 		// });
 		map.on('zoomend', function () {
-			if (zoomLevel >= 16) {
+			if (zoomLevel >= 16 && targetMarker) {
+				// добавляем проверку на наличие targetMarker чтобы после первого отдаления после инициализации не выдавало ошибку, т.к. в первый раз targetMarker === null и чтобы онон не было null, надо либо тыкнуть на иконку, либо сделать эту проверку
 				map.removeLayer(targetMarker);
 			}
 		});

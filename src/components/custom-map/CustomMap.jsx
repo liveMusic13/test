@@ -31,7 +31,7 @@ const CustomMap = () => {
 			zoom={13}
 			minZoom={10}
 			maxZoom={17}
-			scrollWheelZoom={true}
+			// scrollWheelZoom={true}
 			style={{ width: '100%', height: '98%' }}
 			maxBounds={[
 				[56.934709, 35.189603], // Северо-западные координаты
@@ -45,7 +45,6 @@ const CustomMap = () => {
 				isInitialized={isInitialized} //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
 				setIsInitialized={setIsInitialized}
 			/>
-			{/* <CenterZoomMouse /> */}
 			{dataObjectsInMap.points.canvas_map === 0 ? (
 				dataObjectsInMap.points.clastering === 0 ? (
 					<RenderMarkers isMobile={isMobile} zoomLevel={zoomLevel} />
