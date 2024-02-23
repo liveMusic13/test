@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import 'leaflet-canvas-marker';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMap } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import { $axios } from '../../api';
@@ -21,7 +21,6 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 	const polygonsRef = useRef([]); //ПОЛИГОНЫ
 	const canvasLayerRef = useRef(null);
 	// let targetMarker = null;
-	const [searchTargetMarket, setSearchTargetMarket] = useState();
 
 	const getInfoObject = async id => {
 		//ЗАПРОС НА ПОЛУЧЕНИЕ ИНФОРМАЦИИ ОБ ОБЪЕКТЕ В ТАРГЕТЕ
@@ -32,7 +31,6 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 			dispatch(viewSettingsAction.activeLoadingObject());
 
 			const response = await $axios.get(`/api/object_info.php?id=${id}`);
-			console.log(response);
 
 			dispatch(dataObjectInfoAction.addObjectInfo(response.data));
 			if (window.innerWidth <= 767.98)
@@ -86,7 +84,7 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 					marker_id: marker.id,
 				}).addTo(map);
 			}
-
+			console.log(targetMarker);
 			getInfoObject(id_marker); // ЗАПРОС НА СЕРВЕР
 		});
 
@@ -99,12 +97,24 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 				polygonsRef.current.forEach(polygon => map.removeLayer(polygon));
 				polygonsRef.current = [];
 			}
-
 			for (let marker of markersData) {
 				//ПЕРЕБИРАЕМ МАССИВ ОБЪЕКТОВ
 				let mapObject; // КОНКРЕТНЫЙ ОБЪЕКТ, КОТОРЫЙ ПОТОМ БУДЕТ ПУШИТСЯ В МАССИВ МАРКЕРОВ ИЛИ ПОЛИГОНОВ
 
 				if (zoomLevel >= 16 && marker.polygon && marker.polygon.length > 0) {
+					// if (targetMarker && targetMarker.options.marker_id === marker.id) {
+					// 	mapObject = new L.Polygon(marker.polygon, {
+					// 		// СОЗДАЕМ ПОЛИГОН
+					// 		color: 'black', // ЗАБИРАЕМ ЦВЕТ ИЗ ОБЪЕКТА, ПЕРЕВОДИМ В ХЭШ И КРАСИМ
+					// 	}).addTo(map);
+					// 	console.log('yes', marker);
+					// } else {
+					// 	mapObject = new L.Polygon(marker.polygon, {
+					// 		// СОЗДАЕМ ПОЛИГОН
+					// 		color: ARGBtoHEX(marker.color), // ЗАБИРАЕМ ЦВЕТ ИЗ ОБЪЕКТА, ПЕРЕВОДИМ В ХЭШ И КРАСИМ
+					// 	}).addTo(map); // ДОБАВЛЯЕМ НА КАРТУ
+					// }
+
 					mapObject = new L.Polygon(marker.polygon, {
 						// СОЗДАЕМ ПОЛИГОН
 						color: ARGBtoHEX(marker.color), // ЗАБИРАЕМ ЦВЕТ ИЗ ОБЪЕКТА, ПЕРЕВОДИМ В ХЭШ И КРАСИМ
@@ -126,13 +136,27 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 					mapObject = L.marker(marker.crd, {
 						icon,
 						data_marker: marker,
+					}).on('remove', function () {
+						console.log('TESSSSSSSSSSST');
 					}); // СОЗДАЕМ МАРКЕР С КАСТОМНОЙ ИКОНКОЙ И ДОБАВЛЯЕМ НА КАРТУ
 					markersRef.current.push(mapObject); // ПУШИМ В МАССИВ МАРКЕРОВ
 					canvasLayerRef.current.addLayers([mapObject]);
 				}
 
 				mapObject.bindPopup(marker.name); //ДОБАВЛЯЕМ ВСЕМ ОБЪЕКТАМ НА КАРТЕ, И ПОЛИГОНАМ И МАРКЕРАМ, ПОПАПЫ
-				mapObject.on('click', () => getInfoObject(marker.id));
+				mapObject.on('click', () => {
+					if (targetMarker) {
+						map.removeLayer(targetMarker);
+					}
+
+					if (zoomLevel >= 16) {
+						targetMarker = new L.Polygon(marker.polygon, {
+							// СОЗДАЕМ ПОЛИГОН
+							color: 'black', // ЗАБИРАЕМ ЦВЕТ ИЗ ОБЪЕКТА, ПЕРЕВОДИМ В ХЭШ И КРАСИМ
+						}).addTo(map);
+					}
+					getInfoObject(marker.id);
+				}); //TODO: ПОВЕСИТЬ НА КЛИК ДЛЯ ПОЛИГОНОВ ЧТОБЫ МЕНЯТЬ ЦВЕТ
 			} // СТАНДАРТНЫЙ КОД ГДЕ И МАРКЕРЫ И ПОЛИГОНЫ ВИДНЫ
 
 			// for (let marker of markersData) { // ЗДЕСЬ ДОБАВЛЯЮТСЯ СРАЗУ ТОЛЬКО ТЕ МАРКЕРЫ, КОТОРЫЕ БЕЗ ПОЛИГОНОВ, А ПРИ ПРИБЛИЖЕНИИ ПОЯВЛЯЮТСЯ ПОЛИГОНЫ БЕЗ МАРКЕРОВ
@@ -181,9 +205,10 @@ const TestLibraryMarker = ({ isMobile, zoomLevel }) => {
 		// });
 		map.on('zoomend', function () {
 			if (zoomLevel >= 16 && targetMarker) {
-				// добавляем проверку на наличие targetMarker чтобы после первого отдаления после инициализации не выдавало ошибку, т.к. в первый раз targetMarker === null и чтобы онон не было null, надо либо тыкнуть на иконку, либо сделать эту проверку
+				// добавляем проверку на наличие targetMarker чтобы после первого отдаления после инициализации не выдавало ошибку, т.к. в первый раз targetMarker === null и чтобы оно не было null, надо либо тыкнуть на иконку, либо сделать эту проверку
 				map.removeLayer(targetMarker);
 			}
+			console.log(zoomLevel);
 		});
 	}, [map, markersData, zoomLevel]); // ОТСЛЕЖИВАЕМ И ВЫЗЫВАЕМ РЕРЕНДЕР ПРИ ИЗМЕНЕНИИ ЗУМА, ДАННЫХ ОБ ОБЪЕКТАХ И КАРТЫ
 

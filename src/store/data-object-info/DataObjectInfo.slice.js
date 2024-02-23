@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-	values: [],
-};
+const initialState = {};
 
 export const dataObjectInfo = createSlice({
 	name: 'dataObjectInfo',
@@ -10,6 +8,9 @@ export const dataObjectInfo = createSlice({
 	reducers: {
 		addObjectInfo: (state, { payload }) => {
 			return payload;
+		},
+		deleteObjectInfo: (state, { payload }) => {
+			return {};
 		},
 	},
 });

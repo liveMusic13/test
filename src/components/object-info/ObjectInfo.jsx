@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { actions as deleteObjectInfoAction } from '../../store/data-object-info/DataObjectInfo.slice';
 import { actions as viewSettingsAction } from '../../store/view-settings/ViewSettings.slice';
 import Loading from '../ui/loading/Loading';
 import styles from './ObjectInfo.module.scss';
@@ -21,6 +22,8 @@ const ObjectInfo = ({ isDisplay }) => {
 						dispatch(viewSettingsAction.defaultObjectInfo(''));
 						if (window.innerWidth <= 767.98)
 							dispatch(viewSettingsAction.toggleFilters(''));
+
+						dispatch(deleteObjectInfoAction.deleteObjectInfo());
 					}}
 				>
 					<span></span>

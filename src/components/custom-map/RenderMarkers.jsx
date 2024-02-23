@@ -32,7 +32,6 @@ const RenderMarkers = ({ isMobile, zoomLevel }) => {
 							console.log(responce);
 
 							dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
-							dispatch(viewSettingsAction.defaultFilters());
 						} catch (error) {
 							console.log(error);
 						} finally {
