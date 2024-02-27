@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { $axios } from '../../api';
 import { useSearchObjectInMap } from '../../hooks/useSearchObjectInMap';
+import { actions as dataObjectInfoAction } from '../../store/data-object-info/DataObjectInfo.slice';
+import { actions as viewSettingsAction } from '../../store/view-settings/ViewSettings.slice';
 import Button from '../ui/button/Button';
 import Loading from '../ui/loading/Loading';
 import styles from './AllObjects.module.scss';
@@ -9,31 +12,33 @@ const AllObjects = ({ isDisplay }) => {
 	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
 	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
 	const viewSettings = useSelector(state => state.viewSettings);
-	const [numDisplayed, setNumDisplayed] = useState(40);
 	const loader = useRef();
 	const { newCenter } = useSearchObjectInMap();
+	const [isMobile, setIsMobile] = useState(false);
+	const dispatch = useDispatch();
 
-	// const objects = dataObjectsInMap?.points?.points;
-	// const targetObject = useMemo(
-	// 	() => objects.find(elem => elem.id === dataObjectInfo.id),
-	// 	[objects, dataObjectInfo.id]
-	// );
-	// const otherObjects = useMemo(
-	// 	() => objects.filter(elem => elem.id !== dataObjectInfo.id),
-	// 	[objects, dataObjectInfo.id]
-	// );
-	// const [displayedObjects, setDisplayedObjects] = useState([]);
+	useEffect(() => {
+		if (window.innerWidth < 767.98) setIsMobile(true);
+	}, [window.innerWidth]);
 
-	// useEffect(() => {
-	// 	if (targetObject) {
-	// 		setDisplayedObjects([
-	// 			targetObject,
-	// 			...otherObjects.slice(0, numDisplayed - 1),
-	// 		]);
-	// 	} else {
-	// 		setDisplayedObjects(otherObjects.slice(0, numDisplayed));
-	// 	}
-	// }, [targetObject, otherObjects, numDisplayed, dataObjectsInMap]);
+	const getInfoObject = marker => async () => {
+		//HELP: ЗАПРОС НА ПОЛУЧЕНИЕ ИНФОРМАЦИИ ОБ ОБЪЕКТЕ
+		if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
+		dispatch(viewSettingsAction.toggleObjectInfo());
+
+		try {
+			dispatch(viewSettingsAction.activeLoadingObject());
+
+			const response = await $axios.get(`/api/object_info.php?id=${marker.id}`);
+			console.log(response);
+
+			dispatch(dataObjectInfoAction.addObjectInfo(response.data));
+		} catch (error) {
+			console.log(error);
+		} finally {
+			dispatch(viewSettingsAction.defaultLoadingObject());
+		}
+	};
 
 	const objects = dataObjectsInMap?.points?.points;
 
@@ -56,23 +61,6 @@ const AllObjects = ({ isDisplay }) => {
 			setDisplayedObjects([...otherObjects]);
 		}
 	}, [targetObject, otherObjects, dataObjectsInMap]);
-
-	useEffect(() => {
-		const observer = new IntersectionObserver(
-			entries => {
-				if (entries[0].isIntersecting) {
-					setNumDisplayed(prevNum => prevNum + 20);
-				}
-			},
-			{ threshold: 0 }
-		);
-
-		if (loader.current) {
-			observer.observe(loader.current);
-		}
-
-		return () => observer.disconnect();
-	}, [dataObjectsInMap]);
 
 	const mapIcon = {
 		id: 0,
@@ -140,6 +128,7 @@ const AllObjects = ({ isDisplay }) => {
 										? { backgroundColor: '#e0e0e0' }
 										: {}
 								}
+								onClick={getInfoObject(elem)}
 							>
 								<p>{elem.name}</p>
 								<Button icon={mapIcon} newCenter={newCenter} elem={elem} />
