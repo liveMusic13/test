@@ -118,14 +118,37 @@ const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 					let encodedSvg = encodeURIComponent(svg); // КОНВЕРТИРУЕМ В ССЫЛКУ
 					let dataUrl = 'data:image/svg+xml,' + encodedSvg; // ДОБАВЛЯЕМ К НЕМУ DATA И ТЕПЕРЬ ЭТО ССЫЛКА НА КАРТИНКУ
 
+					// const icon = L.icon({
+					// 	// СОЗДАЕМ ИКОНКУ
+					// 	iconUrl:
+					// 		dataObjectInfo.id === marker.id
+					// 			? '../images/icons/target.svg'
+					// 			: dataUrl,
+					// 	iconSize: dataObjectInfo.id === marker.id ? [60, 58] : [20, 18],
+					// 	iconAnchor: dataObjectInfo.id === marker.id ? [22, 21] : [10, 9],
+					// });
+
+					// let mapObject = L.marker(marker.crd, {
+					// 	icon: icon,
+					// }).addTo(map);
+					// iconsRef.current.push(mapObject);
+
+					// // Если это маркер таргета, сохраняем ссылку на него
+					// if (dataObjectInfo.id === marker.id) {
+					// 	if (targetMarker.current) {
+					// 		// Если уже есть маркер таргета, удаляем его
+					// 		map.removeLayer(targetMarker.current);
+					// 		targetMarker.current = null;
+					// 	} else {
+					// 		targetMarker.current = mapObject;
+					// 	}
+					// }
+
 					const icon = L.icon({
 						// СОЗДАЕМ ИКОНКУ
-						iconUrl:
-							dataObjectInfo.id === marker.id
-								? '../images/icons/target.svg'
-								: dataUrl,
-						iconSize: dataObjectInfo.id === marker.id ? [60, 58] : [20, 18],
-						iconAnchor: dataObjectInfo.id === marker.id ? [22, 21] : [10, 9],
+						iconUrl: dataUrl,
+						iconSize: [20, 18],
+						iconAnchor: [10, 9],
 					});
 
 					let mapObject = L.marker(marker.crd, {
@@ -133,14 +156,23 @@ const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 					}).addTo(map);
 					iconsRef.current.push(mapObject);
 
-					// Если это маркер таргета, сохраняем ссылку на него
 					if (dataObjectInfo.id === marker.id) {
+						const targetIcon = L.icon({
+							iconUrl: '../images/icons/target.svg',
+							iconSize: [60, 58],
+							iconAnchor: [22, 21],
+						});
+
+						let targetMapObject = L.marker(marker.crd, {
+							icon: targetIcon,
+						}).addTo(map);
+						iconsRef.current.push(targetMapObject);
+
 						if (targetMarker.current) {
-							// Если уже есть маркер таргета, удаляем его
 							map.removeLayer(targetMarker.current);
 							targetMarker.current = null;
 						} else {
-							targetMarker.current = mapObject;
+							targetMarker.current = targetMapObject;
 						}
 					}
 
