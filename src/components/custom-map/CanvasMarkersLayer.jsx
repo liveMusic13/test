@@ -56,11 +56,11 @@ const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 
 		const zoomLevels = map.getZoom(); //HELP: ПОЛУЧЕНИЕ УРОВНЯ ЗУМА
 
-		if (zoomLevels >= 14) {
+		if (zoomLevels >= 13) {
 			//HELP: ТОЧЕЧНАЯ ОЧИСТКА ПРИ РАЗНЫХ ЗУМАХ. НЕСМОТРЯ НА ОЧИСТКУ ВЫШЕ, ОНА НУЖНА И ЗДЕСЬ
 			markersRef.current.forEach(marker => map.removeLayer(marker));
 			markersRef.current = [];
-		} else if (zoomLevels >= 14 && zoomLevels < 16) {
+		} else if (zoomLevels >= 13 && zoomLevels < 16) {
 			iconsRef.current.forEach(icon => map.removeLayer(icon));
 			iconsRef.current = [];
 		} else {
@@ -88,7 +88,7 @@ const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 			let mapObject;
 			const zoomLevelsForCircle = map.getZoom(); //HELP: ОТДЕЛЬНО ПОЛУЧАЕМ УРОВЕНЬ ЗУМА, ПОТОМУ ЧТО НЕКОРРЕКТНО ОТОБРАЖАЕТ ЕСЛИ ИСПОЛЬЗОВАТЬ ОБЩИЙ ЗУМ, ОБЪЯВЛЕННЫЙ ВЫШЕ
 
-			if (zoomLevelsForCircle <= 14) {
+			if (zoomLevelsForCircle <= 13) {
 				mapObject = new L.CircleMarker(marker.crd, {
 					renderer: canvasLayerRef.current,
 					radius: 5,
@@ -107,7 +107,7 @@ const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 
 			for (let marker of markersData) {
 				if (
-					(zoomLevelForIcon > 14 &&
+					(zoomLevelForIcon > 13 &&
 						zoomLevelForIcon < 16 &&
 						bounds.contains(marker.crd)) ||
 					(zoomLevelForIcon > 15 && //HELP: СТАВЛЮ 15 ХОТЯ СРАБАТЫВАЕТ НА 16. СКОРЕЕ ВСЕГО ПОТОМУ ЧТО НЕПРАВИЛЬНО ОТРАБАТЫВАЕТ УРОВЕНЬ ЗУМА, ПОЭТОМУ ДЛЯ ПРАВИЛЬНОЙ РАБОТЫ МЕНЯЮ НА 15.
