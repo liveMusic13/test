@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { createRef, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { $axios } from '../../api';
 import { useSearchObjectInMap } from '../../hooks/useSearchObjectInMap';
@@ -54,13 +54,33 @@ const AllObjects = ({ isDisplay }) => {
 
 	const [displayedObjects, setDisplayedObjects] = useState([]);
 
+	// useEffect(() => {
+	// 	if (targetObject) {
+	// 		setDisplayedObjects([targetObject, ...otherObjects]);
+	// 	} else {
+	// 		setDisplayedObjects([...otherObjects]);
+	// 	}
+	// }, [targetObject, otherObjects, dataObjectsInMap]);
+	const objectRefs = useRef(objects.map(() => createRef()));
+	const containerRef = useRef(); // ссылка на контейнер
+
 	useEffect(() => {
 		if (targetObject) {
-			setDisplayedObjects([targetObject, ...otherObjects]);
-		} else {
-			setDisplayedObjects([...otherObjects]);
+			// Находим индекс целевого объекта
+			const targetIndex = objects.findIndex(obj => obj.id === targetObject.id);
+
+			// Получаем ссылки на элемент и контейнер
+			const element = objectRefs.current[targetIndex].current;
+			const container = containerRef.current;
+
+			// Вычисляем необходимые значения
+			let offsetTop = element.offsetTop; // вертикальное расстояние от элемента до верхней границы контейнера
+			let middleOffset = container.offsetHeight / 2; // половина высоты контейнера
+
+			// Прокручиваем к целевому объекту
+			container.scrollTop = offsetTop - middleOffset;
 		}
-	}, [targetObject, otherObjects, dataObjectsInMap]);
+	}, [targetObject, objects]);
 
 	const mapIcon = {
 		id: 0,
@@ -98,7 +118,7 @@ const AllObjects = ({ isDisplay }) => {
 					</p>
 				</div>
 			</div>
-			<div className={styles.block__objects}>
+			<div className={styles.block__objects} ref={containerRef}>
 				{viewSettings.isLoading ? (
 					<>
 						<div className={styles.object}>
@@ -118,9 +138,27 @@ const AllObjects = ({ isDisplay }) => {
 						</div>
 					</>
 				) : (
-					displayedObjects.map(elem => {
+					// displayedObjects.map(elem => {
+					// 	return (
+					// 		<div
+					// 			key={elem.id}
+					// 			className={styles.object}
+					// 			style={
+					// 				dataObjectInfo.id === elem.id
+					// 					? { backgroundColor: '#e0e0e0' }
+					// 					: {}
+					// 			}
+					// 			onClick={getInfoObject(elem)}
+					// 		>
+					// 			<p>{elem.name}</p>
+					// 			<Button icon={mapIcon} newCenter={newCenter} elem={elem} />
+					// 		</div>
+					// 	);
+					// })
+					objects.map((elem, index) => {
 						return (
 							<div
+								ref={objectRefs.current[index]}
 								key={elem.id}
 								className={styles.object}
 								style={
@@ -135,22 +173,6 @@ const AllObjects = ({ isDisplay }) => {
 							</div>
 						);
 					})
-					// objects.map(elem => {
-					// 	return (
-					// 		<div
-					// 			key={elem.id}
-					// 			className={styles.object}
-					// 			style={
-					// 				dataObjectInfo.id === elem.id
-					// 					? { backgroundColor: '#e0e0e0' }
-					// 					: {}
-					// 			}
-					// 		>
-					// 			<p>{elem.name}</p>
-					// 			<Button icon={mapIcon} newCenter={newCenter} elem={elem} />
-					// 		</div>
-					// 	);
-					// })
 				)}
 				{/* HELP: ЧТОБЫ БЫ СРАБАТЫВАЛА ПОДГРУЗКА ДАННЫХ В КОНЦЕ СКРОЛА ДОБАВЛЯЕМ БЛОК*/}
 				<div ref={loader} style={{ height: '1px' }}></div>

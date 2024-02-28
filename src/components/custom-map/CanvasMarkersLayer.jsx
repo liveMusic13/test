@@ -74,7 +74,8 @@ const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 			if (zoomLevels >= 16 && marker.polygon && marker.polygon.length > 0) {
 				mapObject = new L.Polygon(marker.polygon, {
 					color:
-						dataObjectInfo.id === marker.id ? 'red' : ARGBtoHEX(marker.color),
+						dataObjectInfo.id === marker.id ? 'black' : ARGBtoHEX(marker.color),
+					weight: dataObjectInfo.id === marker.id ? 6 : 3,
 				}).addTo(map);
 
 				mapObject.on('click', getInfoObject(marker));
@@ -93,11 +94,34 @@ const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 					renderer: canvasLayerRef.current,
 					radius: 5,
 					color:
-						dataObjectInfo.id === marker.id ? 'red' : ARGBtoHEX(marker.color),
+						dataObjectInfo.id === marker.id ? 'black' : ARGBtoHEX(marker.color),
 				}).addTo(map);
 
 				mapObject.on('click', getInfoObject(marker));
 				mapObject.bindPopup(marker.name);
+			}
+
+			if (dataObjectInfo.id === marker.id && zoomLevelsForCircle < 16) {
+				let svg = getIconForMarker(marker); // ПОЛУЧАЕМ МАРКЕР
+				let encodedSvg = encodeURIComponent(svg); // КОНВЕРТИРУЕМ В ССЫЛКУ
+				let dataUrl = 'data:image/svg+xml,' + encodedSvg; // ДОБАВЛЯЕМ К НЕМУ DATA И ТЕПЕРЬ ЭТО ССЫЛКА НА КАРТИНКУ
+				const targetIcon = L.icon({
+					iconUrl: '../images/icons/target.svg',
+					iconSize: [60, 58],
+					iconAnchor: [22, 21],
+				});
+
+				let targetMapObject = L.marker(marker.crd, {
+					icon: targetIcon,
+				}).addTo(map);
+				iconsRef.current.push(targetMapObject);
+
+				if (targetMarker.current) {
+					map.removeLayer(targetMarker.current);
+					targetMarker.current = null;
+				} else {
+					targetMarker.current = targetMapObject;
+				}
 			}
 		}
 
@@ -117,32 +141,6 @@ const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 					let svg = getIconForMarker(marker); // ПОЛУЧАЕМ МАРКЕР
 					let encodedSvg = encodeURIComponent(svg); // КОНВЕРТИРУЕМ В ССЫЛКУ
 					let dataUrl = 'data:image/svg+xml,' + encodedSvg; // ДОБАВЛЯЕМ К НЕМУ DATA И ТЕПЕРЬ ЭТО ССЫЛКА НА КАРТИНКУ
-
-					// const icon = L.icon({
-					// 	// СОЗДАЕМ ИКОНКУ
-					// 	iconUrl:
-					// 		dataObjectInfo.id === marker.id
-					// 			? '../images/icons/target.svg'
-					// 			: dataUrl,
-					// 	iconSize: dataObjectInfo.id === marker.id ? [60, 58] : [20, 18],
-					// 	iconAnchor: dataObjectInfo.id === marker.id ? [22, 21] : [10, 9],
-					// });
-
-					// let mapObject = L.marker(marker.crd, {
-					// 	icon: icon,
-					// }).addTo(map);
-					// iconsRef.current.push(mapObject);
-
-					// // Если это маркер таргета, сохраняем ссылку на него
-					// if (dataObjectInfo.id === marker.id) {
-					// 	if (targetMarker.current) {
-					// 		// Если уже есть маркер таргета, удаляем его
-					// 		map.removeLayer(targetMarker.current);
-					// 		targetMarker.current = null;
-					// 	} else {
-					// 		targetMarker.current = mapObject;
-					// 	}
-					// }
 
 					const icon = L.icon({
 						// СОЗДАЕМ ИКОНКУ
