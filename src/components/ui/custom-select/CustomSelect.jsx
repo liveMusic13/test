@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { actions as adresFilterStringAction } from '../../../store/adres-filter-string/AdresFilterString.slice';
+import { getNumbersFromString } from '../../../utils/numbersFromString';
 import { transformFieldForSelect } from '../../../utils/transformFieldForSelect';
 import styles from './CustomSelect.module.scss';
 
@@ -13,12 +14,49 @@ const CustomSelect = ({
 	dataSelect,
 	clearFilter,
 }) => {
+	const filtersData = useSelector(state => state.dataFilters);
 	const [selectedOption, setSelectedOption] = useState(null);
 	const optionsAgent = transformFieldForSelect(dataSelect.items);
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const dispatch = useDispatch();
 	const { search } = useLocation();
+
+	useEffect(() => {
+		if (searchParams.get(dataSelect.name)) {
+			const nameSelect = dataSelect.name; //HELP: ПОЛУЧАЕМ ИМЯ ФИЛЬТРА
+
+			if (isMultiChoice) {
+				const arrayValue = getNumbersFromString(
+					searchParams.get(dataSelect.name)
+				);
+
+				const multiTargetSelect = filtersData //HELP: НАХОДИМ ТОТ СЕЛЕКТ И ТЕ ОПЦИИ КОТОРЫЕ ЕСТЬ В АДРЕСНОЙ СТРОКЕ
+					.filter(filterObj => filterObj.name === nameSelect)[0];
+
+				const matchingItems = multiTargetSelect.items.filter(
+					(
+						item //HELP: СРАВНИВАЕМ С МАССИВОМ ЗНАЧЕНИЙ ИЗ СТРОКИ И ВОЗВРАЩАЕМ МАССИВ С ОБЪЕКТАМИ, КОТОРЫЕ СОВПАЛИ
+					) => arrayValue.includes(item.item_id)
+				);
+
+				const transformedItems = transformFieldForSelect(matchingItems); //HELP: МЕНЯЕМ ПОЛЯ
+
+				setSelectedOption(transformedItems);
+			} else {
+				const targetSelect = filtersData //HELP: НАХОДИМ ТОТ СЕЛЕКТ И ТЕ ОПЦИИ КОТОРЫЕ ЕСТЬ В АДРЕСНОЙ СТРОКЕ
+					.filter(filterObj => filterObj.name === nameSelect)[0]
+					.items.filter(
+						option =>
+							option.item_id === Number(searchParams.get(dataSelect.name))
+					);
+
+				const newKeyInObj = transformFieldForSelect(targetSelect); //HELP: С ПОМОЩЬЮ ФУНКЦИИ МЕНЯЕМ НАЗВАНИЯ ПОЛЕЙ, ЧТОБЫ REACT-SELECT МОГ СЧИТЫВАТЬ ЗНАЧЕНИЯ.
+
+				setSelectedOption(newKeyInObj); //HELP: ЗАПИСЫВАЕМ МАССИВ С ОДНИМ ОБЪЕКТОМ В ЗНАЧЕНИЯ СЕЛЕКТА
+			}
+		}
+	}, []);
 
 	const handleChange = selectedOption => {
 		setSelectedOption(selectedOption);

@@ -24,6 +24,7 @@ const AllObjects = ({ isDisplay }) => {
 	const getInfoObject = marker => async () => {
 		//HELP: ЗАПРОС НА ПОЛУЧЕНИЕ ИНФОРМАЦИИ ОБ ОБЪЕКТЕ
 		if (isMobile) dispatch(viewSettingsAction.activeSettingsMap(''));
+		if (isMobile) dispatch(viewSettingsAction.defaultObjects(''));
 		dispatch(viewSettingsAction.toggleObjectInfo());
 
 		try {

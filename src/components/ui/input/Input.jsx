@@ -49,6 +49,12 @@ const Input = ({ placeholder, name, clearFilter }) => {
 		}
 	}, [clearFilter]);
 
+	useEffect(() => {
+		if (searchParams.get(name)) {
+			setTest(searchParams.get(name));
+		}
+	}, []);
+
 	return (
 		<div className={styles.wrapper_input}>
 			<input

@@ -15,6 +15,7 @@ import SettingsMap from '../../settings-map/SettingsMap';
 const Home = () => {
 	const dispatch = useDispatch();
 	const userMap = useSelector(state => state.userMap);
+	const adresFilterString = useSelector(state => state.adresFilterString);
 	const viewSettings = useSelector(state => state.viewSettings);
 	const { windowSize } = useCheckWidth();
 	const location = useLocation();
@@ -40,6 +41,21 @@ const Home = () => {
 	// 	};
 	// 	getObject();
 	// }, []);
+
+	// const getFiltersObjects = async () => {
+	// 	try {
+	// 		const responce = await $axios.get(
+	// 			`/api/get_objects.php${adresFilterString.srcRequest}`
+	// 		);
+	// 		dispatch(dataObjectsInMapAction.addDataObjectsInMap(responce.data));
+	// 		if (window.innerWidth <= 767.98) {
+	// 			dispatch(ViewSettingsActions.toggleSettingsMap(''));
+	// 			dispatch(ViewSettingsActions.defaultFilters(''));
+	// 		}
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
 
 	const getObject = useCallback(async () => {
 		try {
@@ -67,13 +83,21 @@ const Home = () => {
 		}
 	}, [map, dispatch, dataFiltersAction]);
 
-	useEffect(() => {
-		navigate(`?map=247`);
+	// useEffect(() => {
+	// 	navigate(`?map=247`);
 
-		if (map) {
+	// 	if (map) {
+	// 		getObject();
+	// 		getFilters();
+	// 		navigate(`?map=${map}`);
+	// 	}
+	// }, [map]);
+	useEffect(() => {
+		if (!map) {
+			navigate(`?map=247`);
+		} else {
 			getObject();
 			getFilters();
-			navigate(`?map=${map}`);
 		}
 	}, [map]);
 
