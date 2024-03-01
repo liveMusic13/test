@@ -22,54 +22,38 @@ const Home = () => {
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams(location.search);
 	const map = searchParams.get('map');
+	// const { getObject, getFilters } = useInitRequest();
 
 	useEffect(() => {
 		dispatch(userMapAction.addNumMap(map));
 	}, []);
 
-	// const map = searchParams.get(userMap);
-
-	// useEffect(() => {
-	// 	const getObject = async () => {
-	// 		try {
-	// 			const responce = await $axios.get('/api/get_objects.php?map=247');
-	// 			console.log(responce.data);
-	// 			dispatch(dataObjectsInMapAction.addDataObjectsInMap(responce.data));
-	// 		} catch (error) {
-	// 			console.log(error);
-	// 		}
-	// 	};
-	// 	getObject();
-	// }, []);
-
-	// const getFiltersObjects = async () => {
-	// 	try {
-	// 		const responce = await $axios.get(
-	// 			`/api/get_objects.php${adresFilterString.srcRequest}`
-	// 		);
-	// 		dispatch(dataObjectsInMapAction.addDataObjectsInMap(responce.data));
-	// 		if (window.innerWidth <= 767.98) {
-	// 			dispatch(ViewSettingsActions.toggleSettingsMap(''));
-	// 			dispatch(ViewSettingsActions.defaultFilters(''));
-	// 		}
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
-
 	const getObject = useCallback(async () => {
 		try {
 			dispatch(ViewSettingsActions.activeLoading());
-
-			const response = await $axios.get(`/api/get_objects.php?map=${map}`);
-			console.log(response.data);
-			dispatch(dataObjectsInMapAction.addDataObjectsInMap(response.data));
+			if (adresFilterString.srcRequest === '') {
+				const response = await $axios.get(`/api/get_objects.php?map=${map}`);
+				dispatch(dataObjectsInMapAction.addDataObjectsInMap(response.data));
+				console.log(response.data);
+			} else {
+				const response = await $axios.get(
+					`/api/get_objects.php${adresFilterString.srcRequest}`
+				);
+				dispatch(dataObjectsInMapAction.addDataObjectsInMap(response.data));
+				console.log(response.data);
+			}
 		} catch (error) {
 			console.log(error);
 		} finally {
 			dispatch(ViewSettingsActions.defaultLoading());
 		}
-	}, [map, dispatch, ViewSettingsActions, dataObjectsInMapAction]);
+	}, [
+		map,
+		dispatch,
+		ViewSettingsActions,
+		dataObjectsInMapAction,
+		adresFilterString.srcRequest,
+	]);
 
 	const getFilters = useCallback(async () => {
 		try {
@@ -83,15 +67,6 @@ const Home = () => {
 		}
 	}, [map, dispatch, dataFiltersAction]);
 
-	// useEffect(() => {
-	// 	navigate(`?map=247`);
-
-	// 	if (map) {
-	// 		getObject();
-	// 		getFilters();
-	// 		navigate(`?map=${map}`);
-	// 	}
-	// }, [map]);
 	useEffect(() => {
 		if (!map) {
 			navigate(`?map=247`);
@@ -99,7 +74,12 @@ const Home = () => {
 			getObject();
 			getFilters();
 		}
-	}, [map]);
+	}, [map, adresFilterString.srcRequest]);
+
+	// useEffect(() => {
+	// 	getObject();
+	// 	console.log('check');
+	// }, [adresFilterString.srcRequest]);
 
 	useEffect(() => {
 		if (windowSize.width <= 767.98) {
