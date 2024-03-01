@@ -9,6 +9,15 @@
 	left: 0;
 	background-color: $color_three;
 
+	&::-webkit-scrollbar {
+		width: adapt(10px, 1440px);
+		background-color: $color_five;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: $color_four;
+	}
+
 	@media (max-width: 991.98px) {
 		min-width: adapt(300px, 1440px);
 	}

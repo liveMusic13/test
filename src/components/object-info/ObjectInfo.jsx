@@ -12,7 +12,13 @@ const ObjectInfo = ({ isDisplay }) => {
 	return (
 		<div
 			className={styles.block__info}
-			style={!isDisplay ? { display: 'none' } : {}}
+			style={
+				!isDisplay
+					? { display: 'none' }
+					: window.innerWidth <= 767.98 //HELP: ЧТОБЫ В МОБИЛЬНОЙ ВЕРСИИ НОРМАЛЬНО ПРОКРУЧИВАЛОСЬ
+					? { overflowY: 'auto' }
+					: {}
+			}
 		>
 			<div className={styles.block__title}>
 				<h2 className={styles.title}>Просмотр объекта</h2>
