@@ -113,8 +113,10 @@ const AllObjects = ({ isDisplay }) => {
 				<div className={styles.allObjects__inMap}>
 					<p className={styles.description}>Всего объектов на карте:</p>
 					<p className={styles.value}>
-						{dataObjectsInMap.points['all-points']
-							? dataObjectsInMap.points['all-points']
+						{dataObjectsInMap.points.points
+							? dataObjectsInMap.points.points.filter(object =>
+									Array.isArray(object.crd)
+							  ).length
 							: '0'}
 					</p>
 				</div>
