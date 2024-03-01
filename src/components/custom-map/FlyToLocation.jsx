@@ -29,7 +29,7 @@ const FlyToLocation = ({
 				const timeoutId = setTimeout(() => {
 					//HELP: ДЕЛАЕМ ЧЕРЕЗ ТАЙМАУТ ЧТОБЫ УСПЕВАЛО ПОДВИНУТЬ КАРТУ К КООРДИНАТАМ, А ПОТОМ УЖЕ ПРИБЛИЖАЛО
 					map.setZoom(17);
-				}, 600);
+				}, 1000);
 
 				return () => clearTimeout(timeoutId);
 			} else {
