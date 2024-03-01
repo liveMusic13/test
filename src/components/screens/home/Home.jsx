@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { $axios } from '../../../api';
@@ -23,10 +23,17 @@ const Home = () => {
 	const [searchParams, setSearchParams] = useSearchParams(location.search);
 	const map = searchParams.get('map');
 	// const { getObject, getFilters } = useInitRequest();
+	const [initApp, setInitApp] = useState(false);
 
 	useEffect(() => {
 		dispatch(userMapAction.addNumMap(map));
 	}, []);
+
+	useEffect(() => {
+		if (adresFilterString.srcRequest !== '') {
+			setInitApp(true);
+		}
+	}, [adresFilterString.srcRequest]);
 
 	const getObject = useCallback(async () => {
 		try {
@@ -74,12 +81,13 @@ const Home = () => {
 			getObject();
 			getFilters();
 		}
-	}, [map, adresFilterString.srcRequest]);
+	}, [map, initApp]);
 
 	// useEffect(() => {
-	// 	getObject();
-	// 	console.log('check');
-	// }, [adresFilterString.srcRequest]);
+	// 	if (map) {
+	// 		getFilters();
+	// 	}
+	// }, [map]);
 
 	useEffect(() => {
 		if (windowSize.width <= 767.98) {
