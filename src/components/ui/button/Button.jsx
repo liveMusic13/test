@@ -53,17 +53,27 @@ const Button = ({ icon, newCenter, elem }) => {
 				if (elem && elem.id) getObjectInfo(elem.id); //HELP: ЧТОБЫ НЕ БЫЛО ОШИБКИ В КОНСОЛИ МОЛ НЕТУ ОБЪЕКТА
 			}}
 		>
-			<svg className={icon.id === 0 ? styles.icon_svg_home : styles.icon_svg}>
-				<use
-					xlinkHref={
-						clickButton
-							? icon.src
-							: icon.src_active
-							? icon.src_active
-							: icon.src
-					}
-				></use>
-			</svg>
+			{elem?.crd === null ? (
+				<svg class='collection-item__icon icon-svg' viewBox='0 0 24 24'>
+					<path
+						fill='red'
+						d='M12 2C15.9 2 19 5.1 19 9C19 14.2 12 22 12 22S5 14.2 5 9C5 5.1 8.1 2 12 2M11 6V12H13V6H11M11 14V16H13V14H11Z'
+					></path>
+				</svg>
+			) : (
+				<svg className={icon.id === 0 ? styles.icon_svg_home : styles.icon_svg}>
+					<use
+						xlinkHref={
+							clickButton
+								? icon.src
+								: icon.src_active
+								? icon.src_active
+								: icon.src
+						}
+					></use>
+				</svg>
+			)}
+
 			<p
 				className={styles.hover__text}
 				style={
@@ -74,7 +84,7 @@ const Button = ({ icon, newCenter, elem }) => {
 						: { left: 0 }
 				}
 			>
-				{icon.hover_text}
+				{elem?.crd === null ? 'Объекта нет на карте' : icon.hover_text}
 			</p>
 		</button>
 	);

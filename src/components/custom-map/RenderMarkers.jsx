@@ -47,24 +47,34 @@ const RenderMarkers = ({ isMobile, zoomLevel }) => {
 							<Polygon
 								key={object.id}
 								positions={object.polygon}
-								color={ARGBtoHEX(object.color)}
+								color={
+									dataObjectInfo.id === object.id
+										? 'black'
+										: ARGBtoHEX(object.color)
+								}
 								eventHandlers={{ click: getObjectInfo }}
+								weight={dataObjectInfo.id === object.id ? 6 : 3}
 							>
 								<Popup>{object.name}</Popup>
 							</Polygon>
 						);
 					} else {
 						// Иначе отображаем маркер
-						customMarkerIcon = divIcon({
-							className:
-								dataObjectInfo.id === object.id
-									? 'my-custom-icon_target'
-									: 'my-custom-icon',
-							iconSize: [23, 23],
-							html: renderToStaticMarkup(
-								<IconMarker key={object.id} object={object} />
-							),
-						});
+						if (dataObjectInfo.id === object.id) {
+							customMarkerIcon = L.icon({
+								iconUrl: '../images/icons/target.svg',
+								iconSize: [53, 53], // размеры иконки
+								iconAnchor: [18.5, 19], // точка иконки, которая соответствует ее географическому положению
+							});
+						} else {
+							customMarkerIcon = divIcon({
+								className: 'my-custom-icon',
+								iconSize: [23, 23],
+								html: renderToStaticMarkup(
+									<IconMarker key={object.id} object={object} />
+								),
+							});
+						}
 					}
 
 					return (

@@ -83,12 +83,6 @@ const Home = () => {
 		}
 	}, [map, initApp]);
 
-	// useEffect(() => {
-	// 	if (map) {
-	// 		getFilters();
-	// 	}
-	// }, [map]);
-
 	useEffect(() => {
 		if (windowSize.width <= 767.98) {
 			dispatch(ViewSettingsActions.defaultFilters(''));
