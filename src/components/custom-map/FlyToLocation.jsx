@@ -26,7 +26,8 @@ const FlyToLocation = ({
 			if (isInitialized) {
 				console.log('FlyToLocation');
 				// Смещение объекта на 0.0025 градуса вправо
-				map.panTo([centerMapObject[0], centerMapObject[1] - 0.0055], 17); //HELP: СДЕЛАЛ ЧЕРЕЗ panTo ЧТОБЫ НЕ БЫЛО КОНФЛИКТОВ С panTo ИЗ CanvasMarkersLayer. ПОТОМУ ЧТО ЕСЛИ СДЕЛАТЬ ЧЕРЕЗ flyTo ТО ОНО БУДЕТ ОСТАНАВЛИВАТЬСЯ КОГДА В CanvasMarkersLayer НАЧИНАЕТ ОТРАБАТЫВАТЬ panTo.
+				map.panTo([centerMapObject[0], centerMapObject[1] - 0.0035], 17); //HELP: СДЕЛАЛ ЧЕРЕЗ panTo ЧТОБЫ НЕ БЫЛО КОНФЛИКТОВ С panTo ИЗ CanvasMarkersLayer. ПОТОМУ ЧТО ЕСЛИ СДЕЛАТЬ ЧЕРЕЗ flyTo ТО ОНО БУДЕТ ОСТАНАВЛИВАТЬСЯ КОГДА В CanvasMarkersLayer НАЧИНАЕТ ОТРАБАТЫВАТЬ panTo.
+				map.setZoom(17);
 			} else {
 				// Смещение объекта на 0.0025 градуса вправо
 				map.panTo([centerMapObject[0], centerMapObject[1] - 0.0055]);
