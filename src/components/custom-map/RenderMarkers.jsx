@@ -1,6 +1,6 @@
 import { divIcon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Marker, Polygon, Popup } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,8 @@ const RenderMarkers = ({ isMobile, zoomLevel }) => {
 	const dispatch = useDispatch();
 	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
 	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
+
+	useEffect(() => {}, [dataObjectInfo.id]);
 
 	return (
 		<>
@@ -45,7 +47,8 @@ const RenderMarkers = ({ isMobile, zoomLevel }) => {
 						// Если уровень зума 16 или больше и у объекта есть полигон, отображаем полигон
 						return (
 							<Polygon
-								key={object.id}
+								// key={object.id}
+								key={`${object.id}-${dataObjectInfo.id === object.id}`}
 								positions={object.polygon}
 								color={
 									dataObjectInfo.id === object.id
