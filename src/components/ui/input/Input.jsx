@@ -63,7 +63,13 @@ const Input = ({ placeholder, name, clearFilter }) => {
 				type='text'
 				value={test}
 				onChange={onChange}
-				style={test !== '' ? { borderBottom: '1px solid #26a69a' } : {}}
+				style={
+					name === 'fix_bag_247'
+						? { width: '0px', height: '0px', margin: '0px' }
+						: test !== ''
+						? { borderBottom: '1px solid #26a69a' }
+						: {}
+				}
 			/>
 			{!isInputValid && (
 				<p style={{ color: 'red' }} className={styles.error}>

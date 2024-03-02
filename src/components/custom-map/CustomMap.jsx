@@ -40,11 +40,11 @@ const CustomMap = () => {
 		>
 			<TileLayer url='https://www.moscowmap.ru/leaflet/tiles/{z}/{x}/{y}.png' />
 			<ZoomTracker setZoomLevel={setZoomLevel} />
-			<FlyToLocation
+			{/* <FlyToLocation
 				centerMapObject={dataObjectsInMap.centerMapObject}
 				isInitialized={isInitialized} //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
 				setIsInitialized={setIsInitialized}
-			/>
+			/> */}
 			{dataObjectsInMap.points.canvas_map === 0 ? (
 				dataObjectsInMap.points.clastering === 0 ? (
 					<RenderMarkers isMobile={isMobile} zoomLevel={zoomLevel} />
@@ -62,6 +62,11 @@ const CustomMap = () => {
 				// <TestLibraryMarker isMobile={isMobile} zoomLevel={zoomLevel} />
 				// <LastTestCanvasMarker isMobile={isMobile} zoomLevel={zoomLevel} />
 			)}
+			<FlyToLocation
+				centerMapObject={dataObjectsInMap.centerMapObject}
+				isInitialized={isInitialized} //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
+				setIsInitialized={setIsInitialized}
+			/>
 		</MapContainer>
 	);
 };

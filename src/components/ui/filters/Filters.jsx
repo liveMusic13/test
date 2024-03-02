@@ -5,6 +5,7 @@ import { actions as dataObjectsInMapAction } from '../../../store/data-objects-i
 import { actions as viewSettingsAction } from '../../../store/view-settings/ViewSettings.slice';
 import BlockInput from '../block-input/BlockInput';
 import CustomSelect from '../custom-select/CustomSelect';
+import Input from '../input/Input';
 import styles from './Filters.module.scss';
 
 const Filters = ({ isDisplay }) => {
@@ -16,10 +17,15 @@ const Filters = ({ isDisplay }) => {
 
 	const getFiltersObjects = async () => {
 		try {
-			const responce = await $axios.get(
-				`/api/get_objects.php${adresFilterString.srcRequest}`
-			);
-			dispatch(dataObjectsInMapAction.addDataObjectsInMap(responce.data));
+			if (adresFilterString.srcRequest === '') {
+				const responce = await $axios.get(`/api/get_objects.php?map=${map}`);
+				dispatch(dataObjectsInMapAction.addDataObjectsInMap(responce.data));
+			} else {
+				const responce = await $axios.get(
+					`/api/get_objects.php${adresFilterString.srcRequest}`
+				);
+				dispatch(dataObjectsInMapAction.addDataObjectsInMap(responce.data));
+			}
 			if (window.innerWidth <= 767.98) {
 				dispatch(viewSettingsAction.toggleSettingsMap(''));
 				dispatch(viewSettingsAction.defaultFilters(''));
@@ -59,12 +65,17 @@ const Filters = ({ isDisplay }) => {
 						);
 					}
 				})}
+				<Input
+					placeholder='От'
+					name={`fix_bag_247`}
+					clearFilter={clearFilter}
+				/>
 				<div className={styles.block__buttons}>
 					<button
 						className={styles.button_clear}
 						onClick={() => {
 							setClearFilter(true);
-
+							console.log('clear test');
 							const timeoutId = setTimeout(() => {
 								setClearFilter(false);
 							}, 1000);

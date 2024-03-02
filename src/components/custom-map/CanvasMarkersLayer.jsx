@@ -10,6 +10,7 @@ import { getIconForMarker } from '../../utils/iconForMarker';
 
 const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
+	const { centerMapObject } = useSelector(state => state.dataObjectsInMap);
 	const map = useMap();
 	const dispatch = useDispatch();
 	const markersRef = useRef([]);
@@ -185,11 +186,26 @@ const CanvasMarkersLayer = ({ markersData, isMobile }) => {
 
 		map.on('moveend zoomend', handleMoveEndZoomEnd);
 
+		// function updateMarkers() {
+		// 	//HELP: функция смещает координаты с центра, чтобы имитировать движение по карте. Это решает проблему, в которой при подгрузке данных или зуме, не отображался новый холст пока не передвинешь карту мышкой
+		// 	var center = map.getCenter();
+		// 	// center.lat += 0.0001;
+		// 	// map.panTo(center);
+		// 	map.flyTo(center);
+		// 	// map.panTo([centerMapObject[0] + 0.0001, centerMapObject[1]]);
+		// 	console.log('отработало в кружках');
+		// }
+
 		function updateMarkers() {
 			//HELP: функция смещает координаты с центра, чтобы имитировать движение по карте. Это решает проблему, в которой при подгрузке данных или зуме, не отображался новый холст пока не передвинешь карту мышкой
-			var center = map.getCenter();
-			center.lat += 0.0001;
-			map.panTo(center);
+			const timeoutId = setTimeout(() => {
+				var center = map.getCenter();
+				// center.lat += 0.0001;
+				map.panTo(center);
+				// map.panTo([centerMapObject[0] + 0.0001, centerMapObject[1]]);
+				console.log('отработало в кружках');
+			}, 500);
+			return () => clearTimeout(timeoutId);
 		}
 		updateMarkers();
 
