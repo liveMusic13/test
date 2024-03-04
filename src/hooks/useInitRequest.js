@@ -20,13 +20,11 @@ export const useInitRequest = () => {
 			if (adresFilterString.srcRequest === '') {
 				const response = await $axios.get(`/api/get_objects.php?map=${map}`);
 				dispatch(dataObjectsInMapAction.addDataObjectsInMap(response.data));
-				console.log(response.data);
 			} else {
 				const response = await $axios.get(
 					`/api/get_objects.php${adresFilterString.srcRequest}`
 				);
 				dispatch(dataObjectsInMapAction.addDataObjectsInMap(response.data));
-				console.log(response.data);
 			}
 		} catch (error) {
 			console.log(error);
@@ -47,7 +45,6 @@ export const useInitRequest = () => {
 				`https://mosmap.ru/api/filters.php?map=${map}`
 			);
 			dispatch(dataFiltersAction.addFilters(responce.data));
-			console.log('filters: ', responce);
 		} catch (error) {
 			console.log(error);
 		}

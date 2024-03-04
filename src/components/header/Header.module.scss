@@ -76,60 +76,6 @@
 
 		@media (max-width: 767.98px) {
 			gap: adapt(60px, 1440px);
-			// display: none;
 		}
 	}
 }
-
-// .burger__button {
-// 	display: none;
-// 	width: adapt(32px, 1440px);
-// 	height: adapt(32px, 1440px);
-// 	background-color: transparent;
-// 	position: relative;
-// 	margin-right: adapt(20px, 1440px);
-
-// 	&:hover {
-// 		cursor: pointer;
-// 		background-color: $color_four;
-// 	}
-
-// 	@media (max-width: 991.98px) {
-// 		width: adapt(42px, 1440px);
-// 		height: adapt(42px, 1440px);
-// 	}
-
-// 	@media (max-width: 767.98px) {
-// 		display: block;
-// 		width: adapt(62px, 1440px);
-// 		height: adapt(62px, 1440px);
-// 	}
-
-// 	> span {
-// 		width: adapt(62px, 1440px);
-// 		height: 2px;
-// 		background-color: $color_two;
-// 		display: block;
-// 		position: relative;
-// 	}
-
-// 	&::after {
-// 		position: absolute;
-// 		content: '';
-// 		width: adapt(62px, 1440px);
-// 		height: 2px;
-// 		bottom: 12%;
-// 		left: 0;
-// 		background-color: $color_two;
-// 	}
-
-// 	&::before {
-// 		position: absolute;
-// 		top: 11%;
-// 		left: 0;
-// 		content: '';
-// 		width: adapt(62px, 1440px);
-// 		height: 2px;
-// 		background-color: $color_two;
-// 	}
-// }

@@ -31,7 +31,6 @@ const RenderMarkers = ({ isMobile, zoomLevel }) => {
 							const responce = await $axios.get(
 								`/api/object_info.php?id=${object.id}`
 							);
-							console.log(responce);
 
 							dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
 						} catch (error) {
@@ -44,10 +43,9 @@ const RenderMarkers = ({ isMobile, zoomLevel }) => {
 					let customMarkerIcon;
 
 					if (zoomLevel >= 16 && object.polygon && object.polygon.length > 0) {
-						// Если уровень зума 16 или больше и у объекта есть полигон, отображаем полигон
+						//HELP: Если уровень зума 16 или больше и у объекта есть полигон, отображаем полигон
 						return (
 							<Polygon
-								// key={object.id}
 								key={`${object.id}-${dataObjectInfo.id === object.id}`}
 								positions={object.polygon}
 								color={
@@ -62,12 +60,12 @@ const RenderMarkers = ({ isMobile, zoomLevel }) => {
 							</Polygon>
 						);
 					} else {
-						// Иначе отображаем маркер
+						//HELP: Иначе отображаем маркер
 						if (dataObjectInfo.id === object.id) {
 							customMarkerIcon = L.icon({
 								iconUrl: '../images/icons/target.svg',
-								iconSize: [53, 53], // размеры иконки
-								iconAnchor: [18.5, 19], // точка иконки, которая соответствует ее географическому положению
+								iconSize: [53, 53],
+								iconAnchor: [18.5, 19],
 							});
 						} else {
 							customMarkerIcon = divIcon({

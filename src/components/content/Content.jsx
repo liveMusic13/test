@@ -25,19 +25,16 @@ const Content = () => {
 		}
 	}, [windowSize]);
 
-	console.log('render Content');
-
 	return (
 		<div className={styles.wrapper}>
 			{viewSettings.isViewFilters && <Filters isDisplay={isDisplay} />}
 			{viewSettings.isObjectInfo && <ObjectInfo isDisplay={isDisplay} />}
 			{viewSettings.isViewObjects &&
-				dataObjectsInMap.points['all-points'] <= 6000 && ( //TODO: ПОМЕНЯТЬ НА 5000 ПЕРЕД РЕЛИЗОМ
+				dataObjectsInMap.points['all-points'] <= 5000 && (
 					<AllObjects isDisplay={isDisplay} />
 				)}
 			<div className={styles.block__map}>
 				<CustomMap />
-				{/* <TestMap /> */}
 				<div className={styles.logo__image}>
 					<a href='https://mosmap.ru'></a>
 				</div>

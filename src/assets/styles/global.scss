@@ -73,7 +73,6 @@ body {
 }
 
 #root {
-	// width: 100vw;
 	height: 100vh;
 }
 //убираем логотип с украинским флагом
@@ -86,14 +85,6 @@ body {
 	align-items: center;
 	justify-content: center;
 }
-// .my-custom-icon_target {
-// 	box-shadow: 0 0 20px rgba(135, 78, 175, 1);
-// 	background: rgba(135, 78, 175, 0.6);
-// 	border-radius: 50%;
-// 	display: flex !important;
-// 	align-items: center;
-// 	justify-content: center;
-// }
 
 .block-map.leaflet-container {
 	width: 400px;

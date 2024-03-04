@@ -12,7 +12,6 @@ const Filters = ({ isDisplay }) => {
 	const dispatch = useDispatch();
 	const dataFilters = useSelector(state => state.dataFilters);
 	const adresFilterString = useSelector(state => state.adresFilterString);
-	const userMap = useSelector(state => state.userMap);
 	const [clearFilter, setClearFilter] = useState(false);
 
 	const getFiltersObjects = async () => {

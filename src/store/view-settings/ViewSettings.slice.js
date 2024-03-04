@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	isViewFilters: true,
 	isViewObjects: true,
-	// isViewBurger: false,
 	isSettingsMap: false,
 	isObjectInfo: false,
 	isLoading: false,
@@ -24,9 +23,6 @@ export const viewSettings = createSlice({
 		toggleObjectInfo: (state, { payload }) => {
 			return { ...state, isObjectInfo: true };
 		},
-		// toggleBurger: (state, { payload }) => {
-		// 	return { ...state, isViewBurger: !state.isViewBurger };
-		// },
 		toggleSettingsMap: (state, { payload }) => {
 			return { ...state, isSettingsMap: !state.isSettingsMap };
 		},

@@ -12,9 +12,6 @@ export const dataObjectsInMap = createSlice({
 	name: 'dataObjectsInMap',
 	initialState,
 	reducers: {
-		// addDataObjectsInMap: (state, { payload }) => {
-		// 	return payload;
-		// },
 		addDataObjectsInMap: (state, { payload }) => {
 			state.points = payload;
 		},

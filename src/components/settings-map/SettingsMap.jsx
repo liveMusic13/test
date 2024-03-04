@@ -9,7 +9,7 @@ import styles from './SettingsMap.module.scss';
 const SettingsMap = () => {
 	const viewSettings = useSelector(state => state.viewSettings);
 	const dispatch = useDispatch();
-	const { windowSize, setWindowSize } = useCheckWidth();
+	const { windowSize } = useCheckWidth();
 
 	return (
 		<div className={styles.wrapper_settings}>

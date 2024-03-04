@@ -89,36 +89,6 @@ const CustomSelect = ({
 		}
 	};
 
-	// const handleChange = selectedOption => {
-	// 	setSelectedOption(selectedOption);
-
-	// 	if (Array.isArray(selectedOption)) {
-	// 		let arrValue = [];
-
-	// 		selectedOption.forEach(option => {
-	// 			arrValue.push(option.value);
-	// 		});
-
-	// 		setSearchParams(prevPar => {
-	// 			if (arrValue.length > 0) {
-	// 				prevPar.set(dataSelect.name, arrValue.join(','));
-	// 			} else {
-	// 				prevPar.delete(dataSelect.name);
-	// 			}
-	// 		});
-	// 		navigate('?' + searchParams.toString());
-	// 	} else {
-	// 		setSearchParams(prevPar => {
-	// 			if (selectedOption && selectedOption.value) {
-	// 				prevPar.set(dataSelect.name, selectedOption.value);
-	// 			} else {
-	// 				prevPar.delete(dataSelect.name);
-	// 			}
-	// 		});
-	// 		navigate('?' + searchParams.toString());
-	// 	}
-	// };
-
 	useEffect(() => {
 		dispatch(adresFilterStringAction.addGetParams(search));
 	}, [search]);
@@ -129,22 +99,6 @@ const CustomSelect = ({
 			dispatch(adresFilterStringAction.clearGetParams(''));
 		}
 	}, [clearFilter]);
-	// useEffect(() => {
-	// 	if (clearFilter) {
-	// 		setSelectedOption(null);
-	// 		(async () => {
-	// 			await setSearchParams(prevPar => {
-	// 				prevPar.delete(dataSelect.name);
-	// 				console.log('после удаления');
-	// 			});
-	// 			// navigate('?' + searchParams.toString());
-	// 			console.log('после навигейта');
-	// 		})();
-	// 		dispatch(adresFilterStringAction.clearGetParams(''));
-
-	// 		console.log('после диспатча');
-	// 	}
-	// }, [clearFilter]);
 
 	const customStyles = {
 		option: (provided, state) => {

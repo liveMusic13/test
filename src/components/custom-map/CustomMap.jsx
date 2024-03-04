@@ -23,28 +23,20 @@ const CustomMap = () => {
 
 	const [zoomLevel, setZoomLevel] = useState(13);
 
-	console.log('render CustomMap');
-
 	return (
 		<MapContainer
 			center={dataObjectsInMap.centerMapObject}
 			zoom={13}
 			minZoom={10}
 			maxZoom={17}
-			// scrollWheelZoom={true}
 			style={{ width: '100%', height: '98%' }}
 			maxBounds={[
-				[56.934709, 35.189603], // Северо-западные координаты
-				[54.294416, 40.128181], // Юго-восточные координаты
+				[56.934709, 35.189603], //HELP: Северо-западные координаты
+				[54.294416, 40.128181], //HELP: Юго-восточные координаты
 			]}
 		>
 			<TileLayer url='https://www.moscowmap.ru/leaflet/tiles/{z}/{x}/{y}.png' />
 			<ZoomTracker setZoomLevel={setZoomLevel} />
-			{/* <FlyToLocation
-				centerMapObject={dataObjectsInMap.centerMapObject}
-				isInitialized={isInitialized} //HELP: ДЛЯ ОТСЛЕЖИВАНИЯ ИНИЦИАЛИЗАЦИИ, ЧТОБЫ ПРИ ПЕРВОМ ЗАПУСКЕ ЗУМ НА 17 НЕ СТАВИЛСЯ
-				setIsInitialized={setIsInitialized}
-			/> */}
 			{dataObjectsInMap.points.canvas_map === 0 ? (
 				dataObjectsInMap.points.clastering === 0 ? (
 					<RenderMarkers isMobile={isMobile} zoomLevel={zoomLevel} />
@@ -58,9 +50,6 @@ const CustomMap = () => {
 					isMobile={isMobile}
 					markersData={dataObjectsInMap.points.points}
 				/>
-				// HELP: БИБЛИОТЕКА, ТЕСТ
-				// <TestLibraryMarker isMobile={isMobile} zoomLevel={zoomLevel} />
-				// <LastTestCanvasMarker isMobile={isMobile} zoomLevel={zoomLevel} />
 			)}
 			<FlyToLocation
 				centerMapObject={dataObjectsInMap.centerMapObject}

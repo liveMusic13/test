@@ -12,7 +12,6 @@ const AllObjects = ({ isDisplay }) => {
 	const dataObjectsInMap = useSelector(state => state.dataObjectsInMap);
 	const dataObjectInfo = useSelector(state => state.dataObjectInfo);
 	const viewSettings = useSelector(state => state.viewSettings);
-	const loader = useRef();
 	const { newCenter } = useSearchObjectInMap();
 	const [isMobile, setIsMobile] = useState(false);
 	const dispatch = useDispatch();
@@ -48,20 +47,6 @@ const AllObjects = ({ isDisplay }) => {
 		[objects, dataObjectInfo.id]
 	);
 
-	const otherObjects = useMemo(
-		() => objects.filter(elem => elem.id !== dataObjectInfo.id),
-		[objects, dataObjectInfo.id]
-	);
-
-	const [displayedObjects, setDisplayedObjects] = useState([]);
-
-	// useEffect(() => {
-	// 	if (targetObject) {
-	// 		setDisplayedObjects([targetObject, ...otherObjects]);
-	// 	} else {
-	// 		setDisplayedObjects([...otherObjects]);
-	// 	}
-	// }, [targetObject, otherObjects, dataObjectsInMap]);
 	const objectRefs = useRef(objects.map(() => createRef()));
 	const containerRef = useRef(); // ссылка на контейнер
 
@@ -141,23 +126,6 @@ const AllObjects = ({ isDisplay }) => {
 						</div>
 					</>
 				) : (
-					// displayedObjects.map(elem => {
-					// 	return (
-					// 		<div
-					// 			key={elem.id}
-					// 			className={styles.object}
-					// 			style={
-					// 				dataObjectInfo.id === elem.id
-					// 					? { backgroundColor: '#e0e0e0' }
-					// 					: {}
-					// 			}
-					// 			onClick={getInfoObject(elem)}
-					// 		>
-					// 			<p>{elem.name}</p>
-					// 			<Button icon={mapIcon} newCenter={newCenter} elem={elem} />
-					// 		</div>
-					// 	);
-					// })
 					objects.map((elem, index) => {
 						return (
 							<div
@@ -177,8 +145,6 @@ const AllObjects = ({ isDisplay }) => {
 						);
 					})
 				)}
-				{/* HELP: ЧТОБЫ БЫ СРАБАТЫВАЛА ПОДГРУЗКА ДАННЫХ В КОНЦЕ СКРОЛА ДОБАВЛЯЕМ БЛОК*/}
-				<div ref={loader} style={{ height: '1px' }}></div>
 			</div>
 		</div>
 	);

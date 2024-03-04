@@ -19,7 +19,6 @@ const Button = ({ icon, newCenter, elem }) => {
 			dispatch(viewSettingsAction.activeLoadingObject());
 
 			const responce = await $axios.get(`/api/object_info.php?id=${id}`);
-			console.log(responce);
 
 			dispatch(dataObjectInfoAction.addObjectInfo(responce.data));
 		} catch (error) {
@@ -27,7 +26,7 @@ const Button = ({ icon, newCenter, elem }) => {
 		} finally {
 			dispatch(viewSettingsAction.defaultLoadingObject());
 		}
-	}; //TODO: ПЕРЕДЕЛАТЬ ПОД НАЖАТИЕ ЗДЕСЬ. УБРАТЬ ЛИШНИЙ КОД
+	};
 
 	return (
 		<button

@@ -23,7 +23,7 @@ const Input = ({ placeholder, name, clearFilter }) => {
 			}
 		});
 		navigate('?' + searchParams.toString());
-	}, 500); // 500 миллисекунд задержки
+	}, 500); //HELP: 500 миллисекунд задержки
 
 	const onChange = event => {
 		const value = event.target.value;
